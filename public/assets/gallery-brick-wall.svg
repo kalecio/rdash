@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="180" viewBox="0 0 360 180">
+  <rect width="360" height="180" fill="#8b211b"/>
+  <g stroke-linejoin="round">
+    <g fill="#681712" stroke="#4b0d0a" stroke-width="8">
+      <rect x="8" y="10" width="164" height="70" rx="13"/>
+      <rect x="188" y="10" width="164" height="70" rx="13"/>
+      <rect x="-82" y="100" width="164" height="70" rx="13"/>
+      <rect x="98" y="100" width="164" height="70" rx="13"/>
+      <rect x="278" y="100" width="164" height="70" rx="13"/>
+    </g>
+    <g fill="none" stroke="#a62d25" stroke-width="3" opacity=".75">
+      <path d="M20 24q2-5 8-5h126q7 0 8 6l2 37q-1 7-8 7H28q-7 0-8-7z"/>
+      <path d="M200 24q2-5 8-5h126q7 0 8 6l2 37q-1 7-8 7H208q-7 0-8-7z"/>
+      <path d="M110 114q2-5 8-5h126q7 0 8 6l2 37q-1 7-8 7H118q-7 0-8-7z"/>
+      <path d="M290 114q2-5 8-5h126q7 0 8 6l2 37q-1 7-8 7H298q-7 0-8-7z"/>
+      <path d="M-70 114q2-5 8-5h126q7 0 8 6l2 37q-1 7-8 7H-62q-7 0-8-7z"/>
+    </g>
+    <g fill="none" stroke="#310907" stroke-width="3" opacity=".8">
+      <path d="m6 12 4-3m161 69 7 2m9-67 5-4m160 70 8 2M96 102l5-4m159 71 7 3"/>
+    </g>
+  </g>
+</svg>
