@@ -1,6 +1,8 @@
 import type * as defaults from '@/cms/defaults'
+import type { ThemeSettings } from './themes'
 
 export type SiteContent = {
+  themeSettings: ThemeSettings
   site: typeof defaults.defaultSite
   home: typeof defaults.defaultHome
   community: typeof defaults.defaultCommunity

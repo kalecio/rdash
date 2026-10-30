@@ -42,6 +42,9 @@ Os volumes `rdash_postgres_data` e `rdash_media_data` preservam banco e uploads 
 - **Novidades e jogos:** conteúdo dos carrosséis, links, imagens, publicação e ordem.
 - **Jogadores:** nomes, fotos, publicação e pontuação. O ranking é ordenado pela pontuação.
 - **Imagens, logotipos e texturas:** substituição das artes, fundos, títulos desenhados e GIFs. É possível enviar PNG/JPEG/WebP/GIF/AVIF ou informar caminhos e URLs. Para SVG, use um caminho/URL de arquivo confiável.
+- **Temas e música:** tema inicial, exibição do seletor e do botão musical, volume inicial, cores e artes das variantes azul/roxa e trilha de cada tema. A variante vermelha usa as cores de Configurações do site e as artes de Imagens, logotipos e texturas. A coleção Áudios aceita arquivos MP3, M4A, OGG, WAV e WebM.
+
+O seletor salva a escolha do visitante em um cookie e a mantém entre páginas e visitas. O áudio começa somente após clicar na nota musical; o mesmo botão pausa e retoma a reprodução. Cada variante usa a trilha incorporada ao respectivo componente do Figma (Street Fighter no azul, Guilty Gear no vermelho e Under Night In-Birth no roxo). Ao trocar o tema durante a reprodução, a trilha correspondente começa; quando pausada, a troca mantém o áudio parado. O player permanece montado durante a navegação interna.
 
 O arquivo enviado tem prioridade sobre o caminho textual. Remova a seleção do upload para voltar a usar o caminho. As artes que contêm letras são imagens; podem ser substituídas neste grupo. Na navegação e nos títulos da Home, alterar o texto também permite usar uma versão textual sem recriar a arte.
 
@@ -63,6 +66,8 @@ pnpm dev
 ```
 
 O banco do Docker é exposto apenas em `127.0.0.1:5434`; ajuste a `DATABASE_URL` local. Pare o container `app` se for iniciar o servidor de desenvolvimento na mesma porta.
+
+O PostgreSQL usa migrações versionadas também no desenvolvimento; o envio automático de esquema está desativado para evitar conflitos ao alternar entre o servidor local e o Docker. Após alterar os campos do CMS, gere e aplique uma migração antes de iniciar o site.
 
 ```sh
 pnpm cms:types

@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    audio: Audio;
     events: Event;
     albums: Album;
     news: News;
@@ -83,6 +84,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    audio: AudioSelect<false> | AudioSelect<true>;
     events: EventsSelect<false> | EventsSelect<true>;
     albums: AlbumsSelect<false> | AlbumsSelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
@@ -98,6 +100,7 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
+    'theme-settings': ThemeSetting;
     installation: Installation;
     site: Site;
     home: Home;
@@ -108,6 +111,7 @@ export interface Config {
     'visual-assets': VisualAsset;
   };
   globalsSelect: {
+    'theme-settings': ThemeSettingsSelect<false> | ThemeSettingsSelect<true>;
     installation: InstallationSelect<false> | InstallationSelect<true>;
     site: SiteSelect<false> | SiteSelect<true>;
     home: HomeSelect<false> | HomeSelect<true>;
@@ -179,6 +183,25 @@ export interface User {
 export interface Media {
   id: number;
   alt: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audio".
+ */
+export interface Audio {
+  id: number;
+  title: string;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -352,6 +375,10 @@ export interface PayloadLockedDocument {
         value: number | Media;
       } | null)
     | ({
+        relationTo: 'audio';
+        value: number | Audio;
+      } | null)
+    | ({
         relationTo: 'events';
         value: number | Event;
       } | null)
@@ -443,6 +470,24 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "audio_select".
+ */
+export interface AudioSelect<T extends boolean = true> {
+  title?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -587,6 +632,93 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Configure o seletor, o tema inicial, as artes azul/roxa e a trilha de cada variante. As cores e artes vermelhas continuam em Configurações do site e Imagens, logotipos e texturas.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "theme-settings".
+ */
+export interface ThemeSetting {
+  id: number;
+  defaultTheme: 'blue' | 'red' | 'purple';
+  controlsEnabled?: boolean | null;
+  musicEnabled?: boolean | null;
+  volume: number;
+  redMusic: {
+    title: string;
+    source: string;
+    /**
+     * O arquivo selecionado substitui o caminho acima. Remova a seleção para voltar à trilha original.
+     */
+    sourceUpload?: (number | null) | Audio;
+  };
+  blue: {
+    colors: {
+      background: string;
+      accent: string;
+      dark: string;
+      card: string;
+      table: string;
+      tableHeader: string;
+      text: string;
+      mutedText: string;
+      homeBackground: string;
+      join: string;
+      heroEdge: string;
+    };
+    music: {
+      title: string;
+      source: string;
+      /**
+       * O arquivo selecionado substitui o caminho acima. Remova a seleção para voltar à trilha original.
+       */
+      sourceUpload?: (number | null) | Audio;
+    };
+    assets?:
+      | {
+          key: string;
+          label: string;
+          url: string;
+          upload?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  purple: {
+    colors: {
+      background: string;
+      accent: string;
+      dark: string;
+      card: string;
+      table: string;
+      tableHeader: string;
+      text: string;
+      mutedText: string;
+      homeBackground: string;
+      join: string;
+      heroEdge: string;
+    };
+    music: {
+      title: string;
+      source: string;
+      /**
+       * O arquivo selecionado substitui o caminho acima. Remova a seleção para voltar à trilha original.
+       */
+      sourceUpload?: (number | null) | Audio;
+    };
+    assets?:
+      | {
+          key: string;
+          label: string;
+          url: string;
+          upload?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -826,6 +958,96 @@ export interface VisualAsset {
     | null;
   updatedAt?: string | null;
   createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "theme-settings_select".
+ */
+export interface ThemeSettingsSelect<T extends boolean = true> {
+  defaultTheme?: T;
+  controlsEnabled?: T;
+  musicEnabled?: T;
+  volume?: T;
+  redMusic?:
+    | T
+    | {
+        title?: T;
+        source?: T;
+        sourceUpload?: T;
+      };
+  blue?:
+    | T
+    | {
+        colors?:
+          | T
+          | {
+              background?: T;
+              accent?: T;
+              dark?: T;
+              card?: T;
+              table?: T;
+              tableHeader?: T;
+              text?: T;
+              mutedText?: T;
+              homeBackground?: T;
+              join?: T;
+              heroEdge?: T;
+            };
+        music?:
+          | T
+          | {
+              title?: T;
+              source?: T;
+              sourceUpload?: T;
+            };
+        assets?:
+          | T
+          | {
+              key?: T;
+              label?: T;
+              url?: T;
+              upload?: T;
+              id?: T;
+            };
+      };
+  purple?:
+    | T
+    | {
+        colors?:
+          | T
+          | {
+              background?: T;
+              accent?: T;
+              dark?: T;
+              card?: T;
+              table?: T;
+              tableHeader?: T;
+              text?: T;
+              mutedText?: T;
+              homeBackground?: T;
+              join?: T;
+              heroEdge?: T;
+            };
+        music?:
+          | T
+          | {
+              title?: T;
+              source?: T;
+              sourceUpload?: T;
+            };
+        assets?:
+          | T
+          | {
+              key?: T;
+              label?: T;
+              url?: T;
+              upload?: T;
+              id?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -2,6 +2,7 @@
 
 import { useSiteContent, useAsset } from "./SiteContent";
 import Image from "next/image";
+import Link from "next/link";
 
 export function GamesCarousel() {
   const content = useSiteContent();
@@ -13,9 +14,9 @@ export function GamesCarousel() {
         <div className={styles.gameTrack}>
           {content.games.map(({title, image, href}) => (
             <article className={styles.gameCard} key={title}>
-              <a href={href} className={styles.gameImage}>
+              <Link href={href} className={styles.gameImage}>
                 <Image src={asset(image)} alt={title} fill unoptimized sizes="(max-width: 600px) 69px, 244px" />
-              </a>
+              </Link>
               <h2>{title}</h2>
             </article>
           ))}

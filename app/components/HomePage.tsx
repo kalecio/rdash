@@ -24,7 +24,7 @@ export function HomePage() {
 
 const styles = {
   redSite: [
-    "relative w-[1440px] h-[var(--home-height)] m-[0_auto] overflow-clip bg-[var(--cms-background)] [zoom:min(1,_calc(100vw_/_1440px))] isolate",
+    "relative w-[1440px] h-[var(--home-height)] m-[0_auto] overflow-clip bg-[var(--cms-homeBackground)] [zoom:min(1,_calc(100vw_/_1440px))] isolate",
     "mobile:w-[402px] mobile:h-[var(--home-mobileHeight)] mobile:m-[0_auto] mobile:[zoom:min(1,_calc(100vw_/_402px))]",
   ].join(" "),
 };

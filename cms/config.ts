@@ -1,5 +1,7 @@
 import type { Access, CollectionConfig, GlobalConfig } from 'payload'
 import { contentFields, linkIsSafe } from './fields'
+import path from 'node:path'
+import { themeSettings } from './theme-settings'
 import { defaultSite, defaultHome, defaultCommunity, defaultEventsPage, defaultGalleryPage, defaultLeaderboardPage, defaultEvents, defaultAlbums, defaultNews, defaultGames, defaultPlayers, defaultAssets } from './defaults'
 
 export const authenticated: Access = ({ req }) => Boolean(req.user)
@@ -16,6 +18,7 @@ const collection = (slug: CollectionConfig['slug'], label: string, sample: Recor
 export const collections: CollectionConfig[] = [
   { slug: 'users', auth: true, labels: { singular: 'Administrador', plural: 'Administradores' }, admin: { useAsTitle: 'email', group: 'Administração' }, access: { ...writes, read: authenticated }, fields: [{ name: 'name', label: 'Nome', type: 'text', required: true }] },
   { slug: 'media', labels: { singular: 'Arquivo', plural: 'Arquivos' }, admin: { useAsTitle: 'alt', group: 'Conteúdo' }, access: { ...writes, read: () => true }, upload: { staticDir: process.env.MEDIA_DIR || 'media', mimeTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/gif', 'image/avif'] }, fields: [{ name: 'alt', label: 'Descrição da imagem (acessibilidade)', type: 'text', required: true }] },
+  { slug: 'audio', labels: { singular: 'Áudio', plural: 'Áudios' }, admin: { useAsTitle: 'title', group: 'Conteúdo' }, access: { ...writes, read: () => true }, upload: { staticDir: path.join(process.env.MEDIA_DIR || 'media', 'audio'), mimeTypes: ['audio/mpeg', 'audio/mp4', 'audio/x-m4a', 'audio/ogg', 'audio/wav', 'audio/x-wav', 'audio/webm'], filesRequiredOnCreate: true }, fields: [{ name: 'title', label: 'Nome da trilha', type: 'text', required: true }] },
   collection('events', 'Eventos', defaultEvents[0]),
   collection('albums', 'Álbuns', { ...defaultAlbums[0], photos: defaultAlbums[1].photos }),
   collection('news', 'Novidades', defaultNews[0]),
@@ -27,6 +30,7 @@ const global = (slug: GlobalConfig['slug'], label: string, data: Record<string, 
   slug, label, admin: { group: 'Páginas e aparência' }, access: { read: () => true, update: authenticated }, fields: contentFields(data),
 })
 export const globals: GlobalConfig[] = [
+  themeSettings,
   { slug: 'installation', label: 'Instalação', admin: { hidden: true }, access: { read: authenticated, update: authenticated }, fields: [{ name: 'importedAt', type: 'date' }] },
   global('site', 'Configurações do site', defaultSite),
   global('home', 'Home', defaultHome),

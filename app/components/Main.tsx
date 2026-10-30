@@ -25,10 +25,10 @@ export function Main() {
 
 const styles = {
   redMain: [
-    "absolute inset-[0_0_493px] h-[var(--home-footerTop)] overflow-visible bg-[var(--cms-background)]",
+    "absolute inset-[0_0_493px] h-[var(--home-footerTop)] overflow-visible bg-[var(--cms-homeBackground)]",
     "[&::before]:content-[''] [&::before]:absolute [&::before]:z-0 [&::before]:w-[1715px] [&::before]:h-[2492px] [&::before]:pointer-events-none [&::before]:opacity-[.52] [&::before]:mix-blend-color-dodge [&::before]:[background:var(--asset-red-scan)_center_/_cover_no-repeat] [&::before]:left-[-62px] [&::before]:top-[630px]",
     "[&::after]:content-[''] [&::after]:absolute [&::after]:z-0 [&::after]:w-[1715px] [&::after]:h-[2492px] [&::after]:pointer-events-none [&::after]:opacity-[.52] [&::after]:mix-blend-color-dodge [&::after]:[background:var(--asset-red-scan)_center_/_cover_no-repeat] [&::after]:left-[-47px] [&::after]:top-[3122px] [&::after]:[transform:scaleY(-1)]",
-    "mobile:absolute mobile:inset-[0_auto_auto_0] mobile:w-[402px] mobile:h-[var(--home-mobileHeight)] mobile:overflow-visible mobile:bg-[var(--cms-background)]",
+    "mobile:absolute mobile:inset-[0_auto_auto_0] mobile:w-[402px] mobile:h-[var(--home-mobileHeight)] mobile:overflow-visible mobile:bg-[var(--cms-homeBackground)]",
     "mobile:[&::before]:left-[-93px] mobile:[&::before]:top-[297px] mobile:[&::before]:w-[517px] mobile:[&::before]:h-[750px] mobile:[&::before]:[background-size:100%_100%]",
     "mobile:[&::after]:left-[-37px] mobile:[&::after]:top-[1183px] mobile:[&::after]:w-[546px] mobile:[&::after]:h-[794px] mobile:[&::after]:[background-size:100%_100%]",
   ].join(" "),

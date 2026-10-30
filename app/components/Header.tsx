@@ -13,8 +13,9 @@ type HeaderProps = {
   activePage?: string;
 };
 
-export function Header({ background = "#e53a36", blurUntilHero = true, communityDesign = false, figmaNav = false, activePage = "Comunidade" }: HeaderProps) {
+export function Header({ background, blurUntilHero = true, communityDesign = false, figmaNav = false, activePage = "Comunidade" }: HeaderProps) {
   const content = useSiteContent();
+  const headerBackground = background || content.site.theme.accent;
   const asset = useAsset();
   const nav = content.site.navigation.filter(item => item.enabled);
   const designNavigation = communityDesign || figmaNav;
@@ -55,8 +56,8 @@ export function Header({ background = "#e53a36", blurUntilHero = true, community
         className={styles.redHeaderBackdrop}
         style={{
           backgroundColor: backdropActive
-            ? `color-mix(in srgb, ${background} 42%, transparent)`
-            : background,
+            ? `color-mix(in srgb, ${headerBackground} 42%, transparent)`
+            : headerBackground,
           backdropFilter: blur,
           WebkitBackdropFilter: blur,
         }}
@@ -149,7 +150,7 @@ const styles = {
   ].join(" "),
   mobileMenuBackdrop: "mobile:fixed mobile:z-31 mobile:inset-0 mobile:w-[100vw] mobile:h-[100dvh] mobile:p-0 mobile:[border:0] mobile:bg-[rgba(0,0,0,.56)]",
   mobileMenuDrawer: [
-    "mobile:fixed mobile:z-32 mobile:inset-[0_0_0_auto] mobile:flex mobile:w-[min(300px,_85vw)] mobile:h-[100dvh] mobile:min-h-full mobile:flex-col mobile:gap-[8px] mobile:p-[104px_24px_24px] mobile:bg-[#5b0c0a] mobile:text-[length:20px] mobile:shadow-[-12px_0_32px_rgba(0,0,0,.35)]",
+    "mobile:fixed mobile:z-32 mobile:inset-[0_0_0_auto] mobile:flex mobile:w-[min(300px,_85vw)] mobile:h-[100dvh] mobile:min-h-full mobile:flex-col mobile:gap-[8px] mobile:p-[104px_24px_24px] mobile:bg-[var(--cms-dark)] mobile:text-[length:20px] mobile:shadow-[-12px_0_32px_rgba(0,0,0,.35)]",
     "mobile:[&_a]:p-[14px_12px] mobile:[&_a]:[border-bottom:1px_solid_rgba(255,255,255,.14)]",
   ].join(" "),
   mobileMenuClose: "mobile:absolute mobile:top-[20px] mobile:right-[20px] mobile:grid mobile:w-[44px] mobile:h-[44px] mobile:place-items-center mobile:p-0 mobile:[border:0] mobile:bg-[transparent] mobile:text-white mobile:cursor-pointer mobile:[font:36px/1_Arial,_sans-serif]",

@@ -25,7 +25,7 @@ export default buildConfig({
     transportOptions: { host: process.env.SMTP_HOST, port: Number(process.env.SMTP_PORT || 587), secure: process.env.SMTP_SECURE === 'true', auth: process.env.SMTP_USER ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD } : undefined },
   }) : undefined,
   db: databaseURL.startsWith('postgres')
-    ? postgresAdapter({ pool: { connectionString: databaseURL }, migrationDir: path.resolve(dirname, 'cms/migrations/postgres') })
+    ? postgresAdapter({ pool: { connectionString: databaseURL }, push: false, migrationDir: path.resolve(dirname, 'cms/migrations/postgres') })
     : sqliteAdapter({ client: { url: databaseURL }, migrationDir: path.resolve(dirname, 'cms/migrations/sqlite') }),
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   upload: { limits: { fileSize: 20_000_000 } },

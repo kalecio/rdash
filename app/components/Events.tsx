@@ -2,6 +2,7 @@
 
 import { useSiteContent, useAsset } from "./SiteContent";
 import Image from "next/image";
+import Link from "next/link";
 
 export function Events() {
   const content = useSiteContent();
@@ -20,7 +21,7 @@ export function Events() {
           <Image unoptimized src={asset("/assets/red-tape.png")}  alt="" width={114} height={122} className={styles.eventTapeCombined} />
         </div>
         <div className={styles.eventInfo}>
-          <a href={event.infoHref} className={styles.eventInfoLink}>{event.infoLabel}</a>
+          <Link href={event.infoHref} className={styles.eventInfoLink}>{event.infoLabel}</Link>
           <Image unoptimized src={asset("/assets/home-info-arrow.png")}  alt="" width={51} height={51} className={styles.eventKindIcon} />
           <h2 id="event-title">{event.typeLabel !== "Tipo do evento" ? event.typeLabel : <Image src={asset("/assets/home-event-label.svg")}  alt={event.typeLabel} width={224} height={42} unoptimized />}</h2>
           {event.type !== "Jogatina mensal" ? <p className="absolute left-[19px] top-[106px] flex h-[185px] w-[459px] items-center rounded-[12px] bg-[var(--cms-accent)] p-[24px] text-[40px] font-bold uppercase">{event.type}</p> : <Image src={asset("/assets/home-event-ribbon.png")}  alt={event.type} width={459} height={185} className="absolute left-[19px] top-[106px] h-[185px] w-[459px]" unoptimized />}
@@ -29,9 +30,9 @@ export function Events() {
           <Image unoptimized src={asset("/assets/red-event-map.png")}  alt="Mapa da Galeria Hora Center" width={455} height={128} className={styles.eventMap} />
           <p className={`${styles.eventAddress} whitespace-pre-line`}>{event.address}</p>
           <div className={styles.eventActions}>
-            <a className={styles.eventJoin} href={event.buttonHref}>
+            <Link className={styles.eventJoin} href={event.buttonHref}>
               {event.buttonLabel !== "Inscreva-se" ? <span className="grid h-full place-items-center rounded-[29px] bg-[var(--cms-accent)] text-[32px] font-bold">{event.buttonLabel}</span> : <Image src={asset("/assets/home-join-button.png")}  alt={event.buttonLabel} width={326} height={121} unoptimized />}
-            </a>
+            </Link>
             <p className={styles.eventPrice}>{event.price}</p>
           </div>
         </div>

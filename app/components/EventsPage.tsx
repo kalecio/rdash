@@ -44,7 +44,7 @@ export function EventsPage() {
         <p>{event.description.replace(/\.\.$/, ".")}</p>
         <Image src={asset(event.detailImage || event.image)} alt={event.title} width={1240} height={548} className={styles.detailImage} unoptimized />
         <div className={styles.detailMeta}>{filter === "past" ? <p>{page.pastMessage}</p> : !event.date && !event.location && !event.price ? <p>{page.detailsMessage}</p> : <><p><strong>{page.dateLabel}</strong> {event.date}</p><p><strong>{page.locationLabel}</strong> {event.location}</p><p><strong>{page.priceLabel}</strong> {event.price}</p></>}
-          <a href={event.href} className="mt-[24px] inline-flex h-[80px] items-center justify-center rounded-[10px] bg-[var(--cms-accent)] px-[32px] text-[24px] font-medium mobile:mt-[16px] mobile:h-[40px] mobile:text-[20px]">{filter === "past" ? page.recordsLabel : page.subscribeLabel}</a>
+          <Link href={event.href} className="mt-[24px] inline-flex h-[80px] items-center justify-center rounded-[10px] bg-[var(--cms-accent)] px-[32px] text-[24px] font-medium mobile:mt-[16px] mobile:h-[40px] mobile:text-[20px]">{filter === "past" ? page.recordsLabel : page.subscribeLabel}</Link>
         </div>
       </article> : <>
         <div className={styles.banner}>

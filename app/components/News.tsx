@@ -2,6 +2,7 @@
 
 import { useSiteContent, useAsset } from "./SiteContent";
 import Image from "next/image";
+import Link from "next/link";
 import { useLayoutEffect, useRef } from "react";
 
 export function News() {
@@ -68,9 +69,9 @@ export function News() {
           {stories.map((story) => (
             <div className={styles.newsSlot} key={story.title}>
               <article className={styles.newsCard}>
-                <a href={story.href} className={styles.newsImageFrame} tabIndex={-1}>
+                <Link href={story.href} className={styles.newsImageFrame} tabIndex={-1} aria-label={story.title}>
                   <Image src={asset(story.image)} alt="" fill unoptimized sizes="(max-width: 600px) 189px, 668px" />
-                </a>
+                </Link>
                 <h2>{story.title}</h2>
                 <p>{story.copy}</p>
               </article>

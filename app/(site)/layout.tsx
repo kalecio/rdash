@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
+import { cookies } from "next/headers";
+import { isThemeId, themeCookie, themeColors } from "@/lib/themes";
 import { getSiteContent } from "@/lib/content";
 import { SiteContentProvider } from "@/app/components/SiteContent";
 import { Geist, Geist_Mono, DM_Sans, Rubik_Dirt } from "next/font/google";
@@ -34,13 +37,19 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const content = await getSiteContent();
+  const preference = (await cookies()).get(themeCookie)?.value;
+  const initialTheme = isThemeId(preference) ? preference : content.themeSettings.defaultTheme;
+  const palette = themeColors(initialTheme, content.site.theme, content.themeSettings);
+  const variables = Object.fromEntries(Object.entries(palette).map(([key, value]) => [`--cms-${key}`, value])) as CSSProperties;
   return (
     <html
       lang={content.site.language}
+      data-theme={initialTheme}
+      style={variables}
       className={`${geistSans.variable} ${geistMono.variable} ${dmSans.variable} ${rubikDirt.variable} h-full antialiased`}
     >
-      <body style={{ backgroundColor: content.site.theme.background, color: content.site.theme.text }} className="min-h-full flex flex-col">
-        <SiteContentProvider content={content}><PencilBorderSvg />{children}</SiteContentProvider>
+      <body className="min-h-full flex flex-col">
+        <SiteContentProvider content={content} initialTheme={initialTheme}><PencilBorderSvg />{children}</SiteContentProvider>
       </body>
     </html>
   );
