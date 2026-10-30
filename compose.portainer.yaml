@@ -1,0 +1,74 @@
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: rdash
+      POSTGRES_USER: rdash
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configure POSTGRES_PASSWORD no ambiente da Stack}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U rdash -d rdash']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    image: rdash-site:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:${APP_PORT:-3000}:3000'
+    environment:
+      NODE_ENV: production
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET:?Configure PAYLOAD_SECRET no ambiente da Stack}
+      DATABASE_URL: ${DATABASE_URL:?Configure DATABASE_URL usando o host db}
+      NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:?Configure a URL pública do site}
+      MEDIA_DIR: /app/media
+      HOSTNAME: 0.0.0.0
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+    volumes:
+      - media_data:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ['sh', '-c', 'node node_modules/payload/bin.js migrate && node node_modules/next/dist/bin/next start --hostname 0.0.0.0']
+    healthcheck:
+      test: ['CMD', 'node', '-e', "fetch('http://localhost:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      start_period: 90s
+      retries: 3
+
+  storybook:
+    image: rdash-site:latest
+    restart: unless-stopped
+    ports:
+      - '127.0.0.1:${STORYBOOK_PORT:-6006}:6006'
+    environment:
+      NODE_ENV: production
+      PORT: 6006
+    command: ['node', 'scripts/serve-storybook.mjs']
+    depends_on:
+      app:
+        condition: service_started
+    healthcheck:
+      test: ['CMD', 'node', '-e', "fetch('http://localhost:6006/index.json').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      start_period: 30s
+      retries: 3
+
+volumes:
+  postgres_data:
+    name: rdash_postgres_data
+  media_data:
+    name: rdash_media_data

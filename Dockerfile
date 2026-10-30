@@ -9,6 +9,7 @@ FROM dependencies AS builder
 COPY . .
 # Used only to compile dynamic routes; the production secret is injected at runtime.
 RUN PAYLOAD_SECRET=build-only-not-a-runtime-secret DATABASE_URL=file:/tmp/rdash-build.db pnpm build
+RUN pnpm build-storybook
 
 FROM node:24.22.1-bookworm-slim AS runner
 WORKDIR /app
