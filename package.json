@@ -3,25 +3,46 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "cms:types": "payload generate:types",
+    "cms:importmap": "payload generate:importmap",
+    "cms:seed": "tsx scripts/seed.ts",
+    "cms:migrate": "payload migrate",
+    "cms:migrate:create": "payload migrate:create",
+    "test:cms": "tsx --test tests/cms.test.ts"
   },
   "dependencies": {
-    "next": "16.3.1",
+    "@payloadcms/db-postgres": "3.92.1",
+    "@payloadcms/db-sqlite": "3.92.1",
+    "@payloadcms/email-nodemailer": "3.92.1",
+    "@payloadcms/next": "3.92.1",
+    "@payloadcms/translations": "3.92.1",
+    "graphql": "^16.14.2",
+    "libsql": "0.4.7",
+    "next": "16.3.3",
+    "payload": "3.92.1",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
+    "@next/env": "16.3.3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.3.1",
+    "eslint-config-next": "16.3.3",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   },
-  "packageManager": "pnpm@10.34.5"
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": "^22.23.4 || >=24.22.1"
+  },
+  "type": "module"
 }

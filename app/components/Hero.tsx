@@ -1,15 +1,19 @@
+"use client";
+
+import { useAsset } from "./SiteContent";
 import Image from "next/image";
 
 export function Hero() {
+  const asset = useAsset();
   return (
     <section id="home-hero" className={styles.redHero} aria-label="R-DASH">
-      <Image className={styles.heroBackdrop} src="/assets/home-hero-background.png" alt="" width={1440} height={611} priority />
+      <Image unoptimized className={styles.heroBackdrop} src={asset("/assets/home-hero-background.png")}  alt="" width={1440} height={611} priority />
       <div className={styles.heroShade} />
-      <Image className={styles.heroSol} src="/assets/red-sol.png" alt="Sol Badguy" width={202} height={431} priority />
-      <Image className={styles.heroKy} src="/assets/red-ky.png" alt="Ky Kiske" width={376} height={431} priority />
-      <Image className={styles.heroLogo} src="/assets/red-logo.png" alt="R-DASH" width={339} height={174} priority />
+      <Image unoptimized className={styles.heroSol} src={asset("/assets/red-sol.png")}  alt="Sol Badguy" width={202} height={431} priority />
+      <Image unoptimized className={styles.heroKy} src={asset("/assets/red-ky.png")}  alt="Ky Kiske" width={376} height={431} priority />
+      <Image unoptimized className={styles.heroLogo} src={asset("/assets/red-logo.png")}  alt="R-DASH" width={339} height={174} priority />
       <div className={styles.heroRedEdge} />
-      <Image className={styles.heroRip} src="/assets/red-rip.png" alt="" width={1479} height={192} />
+      <Image unoptimized className={styles.heroRip} src={asset("/assets/red-rip.png")}  alt="" width={1479} height={192} />
     </section>
   );
 }

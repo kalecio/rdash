@@ -1,32 +1,38 @@
+"use client";
+
+import { useSiteContent, useAsset } from "./SiteContent";
 import Image from "next/image";
 
 export function Events() {
+  const content = useSiteContent();
+  const asset = useAsset();
+  const event = content.home.featuredEvent;
   return (
     <section className={styles.redEvent} id="eventos" aria-labelledby="event-title">
         <div className={styles.eventArtWrap}>
-          <Image src="/assets/red-event-art.png" alt="Arte do próximo evento R-DASH" width={710} height={386} className={styles.eventArt} />
+          <Image unoptimized src={asset("/assets/red-event-art.png")}  alt="Arte do próximo evento R-DASH" width={710} height={386} className={styles.eventArt} />
         </div>
       <div className={styles.eventBoard}>
 
         <div className={styles.eventPosterWrap}>
-          <Image src="/assets/red-event-poster.png" alt="Cartaz do torneio Under Night In-Birth II" width={533} height={705} className={styles.eventPoster} />
-          <Image src="/assets/red-tape.png" alt="" width={114} height={122} className={styles.eventTape} />
-          <Image src="/assets/red-tape.png" alt="" width={114} height={122} className={styles.eventTapeCombined} />
+          <Image unoptimized src={asset("/assets/red-event-poster.png")}  alt="Cartaz do torneio Under Night In-Birth II" width={533} height={705} className={styles.eventPoster} />
+          <Image unoptimized src={asset("/assets/red-tape.png")}  alt="" width={114} height={122} className={styles.eventTape} />
+          <Image unoptimized src={asset("/assets/red-tape.png")}  alt="" width={114} height={122} className={styles.eventTapeCombined} />
         </div>
         <div className={styles.eventInfo}>
-          <a href="/eventos" className={styles.eventInfoLink}>&gt;&gt; INFO</a>
-          <Image src="/assets/home-info-arrow.png" alt="" width={51} height={51} className={styles.eventKindIcon} />
-          <h2 id="event-title"><Image src="/assets/home-event-label.svg" alt="Tipo do evento" width={224} height={42} unoptimized /></h2>
-          <Image src="/assets/home-event-ribbon.png" alt="Jogatina mensal" width={459} height={185} className="absolute left-[19px] top-[106px] h-[185px] w-[459px]" unoptimized />
-          <Image src="/assets/home-info-arrow.png" alt="" width={51} height={51} className={styles.eventLocationIcon} />
-          <h3><Image src="/assets/home-location-label.svg" alt="Local:" width={88} height={33} unoptimized /></h3>
-          <Image src="/assets/red-event-map.png" alt="Mapa da Galeria Hora Center" width={455} height={128} className={styles.eventMap} />
-          <p className={styles.eventAddress}>Galeria Hora Center<br />Rua da Hora, 345 - Espinheiro</p>
+          <a href={event.infoHref} className={styles.eventInfoLink}>{event.infoLabel}</a>
+          <Image unoptimized src={asset("/assets/home-info-arrow.png")}  alt="" width={51} height={51} className={styles.eventKindIcon} />
+          <h2 id="event-title">{event.typeLabel !== "Tipo do evento" ? event.typeLabel : <Image src={asset("/assets/home-event-label.svg")}  alt={event.typeLabel} width={224} height={42} unoptimized />}</h2>
+          {event.type !== "Jogatina mensal" ? <p className="absolute left-[19px] top-[106px] flex h-[185px] w-[459px] items-center rounded-[12px] bg-[var(--cms-accent)] p-[24px] text-[40px] font-bold uppercase">{event.type}</p> : <Image src={asset("/assets/home-event-ribbon.png")}  alt={event.type} width={459} height={185} className="absolute left-[19px] top-[106px] h-[185px] w-[459px]" unoptimized />}
+          <Image unoptimized src={asset("/assets/home-info-arrow.png")}  alt="" width={51} height={51} className={styles.eventLocationIcon} />
+          <h3>{event.locationLabel !== "Local:" ? event.locationLabel : <Image src={asset("/assets/home-location-label.svg")}  alt={event.locationLabel} width={88} height={33} unoptimized />}</h3>
+          <Image unoptimized src={asset("/assets/red-event-map.png")}  alt="Mapa da Galeria Hora Center" width={455} height={128} className={styles.eventMap} />
+          <p className={`${styles.eventAddress} whitespace-pre-line`}>{event.address}</p>
           <div className={styles.eventActions}>
-            <a className={styles.eventJoin} href="/eventos">
-              <Image src="/assets/home-join-button.png" alt="Inscreva-se" width={326} height={121} unoptimized />
+            <a className={styles.eventJoin} href={event.buttonHref}>
+              {event.buttonLabel !== "Inscreva-se" ? <span className="grid h-full place-items-center rounded-[29px] bg-[var(--cms-accent)] text-[32px] font-bold">{event.buttonLabel}</span> : <Image src={asset("/assets/home-join-button.png")}  alt={event.buttonLabel} width={326} height={121} unoptimized />}
             </a>
-            <p className={styles.eventPrice}>Valor: R$10 (pago no local)</p>
+            <p className={styles.eventPrice}>{event.price}</p>
           </div>
         </div>
       </div>
@@ -37,12 +43,12 @@ export function Events() {
 
 const styles = {
   redEvent: [
-    "absolute z-3 left-0 top-[716px] w-[1440px] h-[950px]",
-    "mobile:top-[218.9px] mobile:left-0 mobile:w-[402px] mobile:h-[390px]",
+    "absolute z-3 left-0 top-[var(--home-eventTop)] w-[1440px] h-[950px]",
+    "mobile:top-[var(--home-mobileEventTop)] mobile:left-0 mobile:w-[402px] mobile:h-[390px]",
   ].join(" "),
   eventBoard: [
     "absolute left-[102px] top-[107px] w-[1240px] h-[819px] rounded-[42px] [background:linear-gradient(180deg,_#2a2a2ae5,_#00000078_71%,_#66666600)] shadow-[0_13px_0_rgba(0,0,0,.45)]",
-    "[&::before]:content-[''] [&::before]:absolute [&::before]:inset-0 [&::before]:rounded-[inherit] [&::before]:[background:url('/assets/red-texture.png')_center/cover] [&::before]:opacity-[.18]",
+    "[&::before]:content-[''] [&::before]:absolute [&::before]:inset-0 [&::before]:rounded-[inherit] [&::before]:[background:var(--asset-red-texture)_center/cover] [&::before]:opacity-[.18]",
     "mobile:left-[29.16px] mobile:top-[141.42px] mobile:w-[350.03px] mobile:h-[231.19px] mobile:rounded-[12px]",
     "mobile:[&::before]:rounded-[inherit]",
   ].join(" "),

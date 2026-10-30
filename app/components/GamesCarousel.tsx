@@ -1,24 +1,20 @@
+"use client";
+
+import { useSiteContent, useAsset } from "./SiteContent";
 import Image from "next/image";
 
-const games = [
-  ["Under Night In-Birth II", "/assets/home-game-1.png"],
-  ["Blazblue", "/assets/home-game-2.png"],
-  ["Guilty Gear Strive", "/assets/home-game-3.png"],
-  ["Asuka 120% Limit Over", "/assets/home-game-4.png"],
-  ["Vampire Savior", "/assets/home-game-5.png"],
-  ["Dragon Ball FighterZ", "/assets/home-game-6.png"],
-];
-
 export function GamesCarousel() {
+  const content = useSiteContent();
+  const asset = useAsset();
   return (
-    <section className={styles.redGames} id="galeria" aria-label="Nossos jogos">
-      <Image className={styles.sectionStamp} src="/assets/red-games-title.png" alt="Nossos jogos" width={710} height={386} />
+    <section className={styles.redGames} id="galeria" aria-label={content.home.gamesTitle}>
+      {content.home.gamesTitle === "Nossos jogos" ? <Image unoptimized className={styles.sectionStamp} src={asset("/assets/red-games-title.png")}  alt={content.home.gamesTitle} width={710} height={386} /> : <h2 className={`${styles.sectionStamp} flex items-center text-[72px] font-bold mobile:text-[26px]`}>{content.home.gamesTitle}</h2>}
       <div className={styles.gameTrackWindow}>
         <div className={styles.gameTrack}>
-          {games.map(([title, image]) => (
+          {content.games.map(({title, image, href}) => (
             <article className={styles.gameCard} key={title}>
-              <a href="/galeria" className={styles.gameImage}>
-                <Image src={image} alt={title} fill unoptimized sizes="(max-width: 600px) 69px, 244px" />
+              <a href={href} className={styles.gameImage}>
+                <Image src={asset(image)} alt={title} fill unoptimized sizes="(max-width: 600px) 69px, 244px" />
               </a>
               <h2>{title}</h2>
             </article>
@@ -31,8 +27,8 @@ export function GamesCarousel() {
 
 const styles = {
   redGames: [
-    "absolute left-0 top-[3544px] w-[1440px] h-[1109px]",
-    "mobile:left-0 mobile:top-[1128.41px] mobile:w-[402px] mobile:h-[323.59px]",
+    "absolute left-0 top-[var(--home-gamesTop)] w-[1440px] h-[1109px]",
+    "mobile:left-0 mobile:top-[var(--home-mobileGamesTop)] mobile:w-[402px] mobile:h-[323.59px]",
   ].join(" "),
   sectionStamp: [
     "absolute w-[710px] h-[386px] object-contain left-[44px] top-0",

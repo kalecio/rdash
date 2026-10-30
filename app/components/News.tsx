@@ -1,27 +1,13 @@
 "use client";
 
+import { useSiteContent, useAsset } from "./SiteContent";
 import Image from "next/image";
 import { useLayoutEffect, useRef } from "react";
 
-const stories = [
-  {
-    title: "Resultados do Último Torneio",
-    copy: "Confira como foi o TOP 8 do nosso último torneio realizado no Festival do Orgulho Nerd.",
-    image: "/assets/home-news-3.png",
-  },
-  {
-    title: "Lançamento da Nossa Mascote",
-    copy: "Isso mesmo! O RecifeDash agora tem uma mascote! Quem nos visitou no Orgulho Nerd já conhece ela, mas hoje revelamos mais detalhes sobre a nossa adorável menina-caranguejo.",
-    image: "/assets/home-news-2.png",
-  },
-  {
-    title: "Jogatina Mensal",
-    copy: "Esse Domingo estaremos de volta na QB GEEK. Dessa vez nossa atração principal do dia será o bom e velho torneio de Under Night In-Birth II.",
-    image: "/assets/home-news-1.png",
-  },
-];
-
 export function News() {
+  const content = useSiteContent();
+  const asset = useAsset();
+  const stories = content.news;
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -49,6 +35,7 @@ export function News() {
         return [{ card, distance }];
       });
 
+      if (!cards.length) return;
       const centeredCard = cards.reduce((closest, current) => current.distance < closest.distance ? current : closest);
       cards.forEach(({ card }) => card.classList.toggle("is-side", card !== centeredCard.card));
     };
@@ -66,23 +53,23 @@ export function News() {
       viewport.removeEventListener("scroll", updateScale);
       observer.disconnect();
     };
-  }, []);
+  }, [stories.length]);
 
   return (
-    <section className={styles.redNews} aria-label="Novidades">
-      <Image className={styles.sectionStamp} src="/assets/red-news-title.png" alt="Novidades" width={710} height={386} />
+    <section className={styles.redNews} aria-label={content.home.newsTitle}>
+      {content.home.newsTitle === "Novidades" ? <Image unoptimized className={styles.sectionStamp} src={asset("/assets/red-news-title.png")}  alt={content.home.newsTitle} width={710} height={386} /> : <h2 className={`${styles.sectionStamp} flex items-center text-[72px] font-bold mobile:text-[26px]`}>{content.home.newsTitle}</h2>}
       <div
         className={styles.newsViewport}
         ref={viewportRef}
         tabIndex={0}
         aria-label="Carrossel de novidades. Role horizontalmente para navegar."
       >
-        <div className={styles.newsTrack} ref={trackRef}>
+        <div className={styles.newsTrack} ref={trackRef} style={{ "--news-width": `${875 + stories.length * 566}px`, "--mobile-news-width": `${242 + stories.length * 160}px` } as React.CSSProperties}>
           {stories.map((story) => (
             <div className={styles.newsSlot} key={story.title}>
               <article className={styles.newsCard}>
-                <a href="/comunidade" className={styles.newsImageFrame} tabIndex={-1}>
-                  <Image src={story.image} alt="" fill unoptimized sizes="(max-width: 600px) 189px, 668px" />
+                <a href={story.href} className={styles.newsImageFrame} tabIndex={-1}>
+                  <Image src={asset(story.image)} alt="" fill unoptimized sizes="(max-width: 600px) 189px, 668px" />
                 </a>
                 <h2>{story.title}</h2>
                 <p>{story.copy}</p>
@@ -97,8 +84,8 @@ export function News() {
 
 const styles = {
   redNews: [
-    "absolute left-0 top-[1608px] w-[1440px] h-[858px]",
-    "mobile:left-0 mobile:top-[581.91px] mobile:w-[402px] mobile:h-[272px]",
+    "absolute left-0 top-[var(--home-newsTop)] w-[1440px] h-[858px]",
+    "mobile:left-0 mobile:top-[var(--home-mobileNewsTop)] mobile:w-[402px] mobile:h-[272px]",
   ].join(" "),
   sectionStamp: [
     "absolute w-[710px] h-[386px] object-contain left-[47px] top-0",
@@ -110,8 +97,8 @@ const styles = {
     "mobile:left-0 mobile:top-[99.36px] mobile:w-[402px] mobile:h-[143px]",
   ].join(" "),
   newsTrack: [
-    "relative flex w-[2573px] h-[506px] pl-[566px] [transform:translateX(-128px)]",
-    "mobile:w-[722px] mobile:h-[143px] mobile:pr-[121px] mobile:pl-[121px] mobile:[transform:translateX(-11.3px)]",
+    "relative flex w-[var(--news-width)] h-[506px] pl-[566px] [transform:translateX(-128px)]",
+    "mobile:w-[var(--mobile-news-width)] mobile:h-[143px] mobile:pr-[121px] mobile:pl-[121px] mobile:[transform:translateX(-11.3px)]",
   ].join(" "),
   newsSlot: [
     "news-slot",

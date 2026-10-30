@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# R-DASH — site e CMS
 
-## Getting Started
+Site Next.js com Payload CMS integrado. O conteúdo inicial preserva as páginas aprovadas no Figma.
 
-First, run the development server:
+## Iniciar com Docker
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Requisitos: Docker Desktop ou Docker Engine com Compose.
+
+1. Copie `.env.example` para `.env`.
+2. Gere valores aleatórios diferentes para `PAYLOAD_SECRET` e `POSTGRES_PASSWORD`. Ajuste também a senha na `DATABASE_URL` se usar os comandos locais.
+3. Execute:
+
+```sh
+docker compose up -d --build
+docker compose exec app node --import tsx scripts/seed.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O primeiro comando cria o PostgreSQL, aplica as migrações e inicia o site. O segundo importa eventos, álbuns, notícias, jogos e ranking. A importação pode ser repetida: depois de concluída, preserva as edições e exclusões feitas no painel.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Site: http://localhost:3000
+- Painel: http://localhost:3000/admin
+- Estado do serviço: http://localhost:3000/api/health
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Abra `/admin` para criar o primeiro administrador. Nenhuma conta ou senha padrão é criada. Faça essa configuração antes de expor o serviço publicamente.
 
-## Learn More
+```sh
+docker compose logs -f app
+docker compose stop
+docker compose start
+```
 
-To learn more about Next.js, take a look at the following resources:
+Os volumes `rdash_postgres_data` e `rdash_media_data` preservam banco e uploads entre reinicializações e atualizações. `docker compose down` preserva os volumes; não utilize `down -v` se quiser manter os dados.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## O que editar
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Configurações do site:** nome, SEO geral, idioma, navegação (texto, destino, ordem e visibilidade), rodapé, links e cores.
+- **Home:** visibilidade das seções, nomes dos carrosséis, informações e links do próximo evento. O grupo avançado permite ajustar posições verticais e alturas no desktop/mobile.
+- **Comunidade:** títulos, textos, descrições de imagens e links do convite.
+- **Páginas de eventos, galeria e ranking:** títulos, subtítulos, SEO, rótulos, botões e mensagens.
+- **Eventos:** cadastro, ordem, publicação, período (próximo/anterior), descrições, imagens desktop/mobile/detalhe, data, local, valor e inscrição.
+- **Álbuns:** título, descrição, capa desktop/mobile, publicação, ordem e fotos com texto alternativo. Cada álbum usa `/galeria/seu-slug`.
+- **Novidades e jogos:** conteúdo dos carrosséis, links, imagens, publicação e ordem.
+- **Jogadores:** nomes, fotos, publicação e pontuação. O ranking é ordenado pela pontuação.
+- **Imagens, logotipos e texturas:** substituição das artes, fundos, títulos desenhados e GIFs. É possível enviar PNG/JPEG/WebP/GIF/AVIF ou informar caminhos e URLs. Para SVG, use um caminho/URL de arquivo confiável.
 
-## Deploy on Vercel
+O arquivo enviado tem prioridade sobre o caminho textual. Remova a seleção do upload para voltar a usar o caminho. As artes que contêm letras são imagens; podem ser substituídas neste grupo. Na navegação e nos títulos da Home, alterar o texto também permite usar uma versão textual sem recriar a arte.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Recarregue o site após salvar para ver as alterações. A leitura pública vem do banco a cada requisição e não exige novo build. Campos de publicação controlam quais registros aparecem na API pública e no site. Todas as alterações exigem login.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+A estrutura visual continua baseada nos componentes existentes. O painel permite editar conteúdo, cores, artes, visibilidade e posições avançadas da Home; criar novos tipos de seção ou alterar regras de responsividade exige desenvolvimento.
+
+## Desenvolvimento
+
+Node **24.22.1** e pnpm **10.34.5** (também definidos em `.nvmrc`, `.tool-versions` e `package.json`).
+
+```sh
+corepack enable
+pnpm install
+docker compose up -d db
+pnpm cms:migrate
+pnpm cms:seed
+pnpm dev
+```
+
+O banco do Docker é exposto apenas em `127.0.0.1:5434`; ajuste a `DATABASE_URL` local. Pare o container `app` se for iniciar o servidor de desenvolvimento na mesma porta.
+
+```sh
+pnpm cms:types
+pnpm cms:importmap
+pnpm cms:migrate:create nome-da-alteracao
+pnpm cms:migrate
+pnpm test:cms
+pnpm lint
+pnpm build
+```
+
+O adaptador SQLite também está disponível para testes isolados (`DATABASE_URL=file:./data/rdash.db`). As migrações de produção deste projeto são para PostgreSQL.
+
+## Hospedagem própria
+
+A imagem Docker executa como usuário sem privilégios. As migrações são aplicadas antes de iniciar o site. O Compose publica apenas na interface local; para publicação, coloque um proxy reverso com HTTPS na frente e configure `NEXT_PUBLIC_SERVER_URL` para o domínio real.
+
+O build precisa de acesso à internet para instalar dependências e obter as fontes do Google. O segredo usado durante o build é descartável; o segredo real é injetado em tempo de execução pelo Compose.
+
+Configure as variáveis `SMTP_*` para enviar e-mails de recuperação de senha. Sem SMTP, o Payload registra os e-mails no log, apenas para desenvolvimento.
+
+Faça backups regulares do PostgreSQL e do volume de uploads e valide a restauração. Uma cópia apenas do repositório não inclui os conteúdos editados. Guarde `.env` fora do Git e mantenha o `PAYLOAD_SECRET` estável nas atualizações.
