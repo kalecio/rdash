@@ -6,7 +6,7 @@ const games = [
   ["Guilty Gear Strive", "/assets/home-game-3.png"],
   ["Asuka 120% Limit Over", "/assets/home-game-4.png"],
   ["Vampire Savior", "/assets/home-game-5.png"],
-  ["Dragon Ball FighterZ", "/assets/red-game-6.png"],
+  ["Dragon Ball FighterZ", "/assets/home-game-6.png"],
 ];
 
 export function GamesCarousel() {
@@ -18,7 +18,7 @@ export function GamesCarousel() {
           {games.map(([title, image]) => (
             <article className={styles.gameCard} key={title}>
               <a href="/galeria" className={styles.gameImage}>
-                <Image src={image} alt={title} fill sizes="(max-width: 600px) 69px, 244px" />
+                <Image src={image} alt={title} fill unoptimized sizes="(max-width: 600px) 69px, 244px" />
               </a>
               <h2>{title}</h2>
             </article>
@@ -44,8 +44,8 @@ const styles = {
     "mobile:left-0 mobile:top-[99px] mobile:w-[402px] mobile:h-[205px]",
   ].join(" "),
   gameTrack: [
-    "absolute top-[218px] left-[115px] flex items-start gap-[60px] w-max",
-    "mobile:top-0 mobile:left-[18.5px] mobile:gap-[16.92px]",
+    "absolute top-[218px] left-0 flex items-start gap-[60px] w-max pl-[115px] pr-[100px]",
+    "mobile:top-0 mobile:left-0 mobile:gap-[16.92px] mobile:pl-[18.5px] mobile:pr-[18.5px]",
   ].join(" "),
   gameCard: [
     "flex-[0_0_244px] w-[244px] text-center",
@@ -55,7 +55,7 @@ const styles = {
   ].join(" "),
   gameImage: [
     "relative block w-[244px] h-[432px] overflow-hidden ",
-    "[&_img]:object-cover",
+    "[&_img]:object-fill",
     "mobile:w-[68.88px] mobile:h-[121.95px] ",
   ].join(" "),
 };

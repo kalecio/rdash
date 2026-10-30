@@ -33,7 +33,7 @@ export function EventsPage() {
         <Link href="/leaderboard">Leaderboard</Link>
         <button type="button" aria-label="Buscar eventos" className="ml-auto h-[24px] w-[24px]" onClick={()=>setSearchOpen(!searchOpen)}><SearchIcon /></button>
       </nav>
-      {searchOpen && <label className="absolute left-[100px] top-[145px] z-30 rounded bg-[#881411] p-[8px] mobile:left-[16px] mobile:top-[113px]">Buscar eventos <input autoFocus value={query} onChange={e=>{setQuery(e.target.value);setSelected(null)}} className="ml-[8px] w-[220px] rounded bg-white px-[8px] text-black" /></label>}
+      {searchOpen && <label className="absolute left-[100px] top-[145px] z-10 rounded bg-[#881411] p-[8px] mobile:left-[16px] mobile:top-[113px]">Buscar eventos <input autoFocus value={query} onChange={e=>{setQuery(e.target.value);setSelected(null)}} className="ml-[8px] w-[220px] rounded bg-white px-[8px] text-black" /></label>}
       <header className={`${styles.intro} ${event ? "left-[148px]" : "left-[100px]"}`}>
         {event && <button aria-label="Voltar aos eventos" type="button" onClick={()=>setSelected(null)} className="absolute left-[-48px] top-[15px] h-[32px] w-[32px] mobile:left-auto mobile:right-0">←</button>}
         <h1><span className="mobile:hidden">{heading}</span><span className="hidden mobile:inline">EVENTOS</span></h1>
@@ -72,7 +72,7 @@ export function EventsPage() {
 }
 
 const styles = {
-  subnav: "absolute left-[88px] top-[93px] z-30 flex h-[38px] w-[1266px] items-center gap-[24px] bg-[#881411] px-[56px] text-[16px] leading-[21px] shadow-[0_4px_4px_#0004] [&_button]:cursor-pointer [&_button[aria-current]]:underline mobile:hidden",
+  subnav: "absolute left-[88px] top-[93px] z-10 flex h-[38px] w-[1266px] items-center gap-[24px] bg-[#881411] px-[56px] text-[16px] leading-[21px] shadow-[0_4px_4px_#0004] [&_button]:cursor-pointer [&_button[aria-current]]:underline mobile:hidden",
   intro: "absolute top-[208px] [&_h1]:text-[48px] [&_h1]:font-bold [&_h1]:leading-[62px] [&_p]:mt-[8px] [&_p]:text-[32px] [&_p]:font-medium [&_p]:leading-[42px] [&_p]:text-[#ededed] mobile:left-[16px] mobile:top-[137px] mobile:w-[370px] mobile:[&_h1]:text-[32px] mobile:[&_h1]:leading-[42px] mobile:[&_p]:text-[20px] mobile:[&_p]:leading-[26px]",
   banner: "absolute left-[87px] top-[342px] h-[440px] w-[1260px] mobile:left-[13px] mobile:top-[260px] mobile:h-[131.3px] mobile:w-[376px]",
   list: "absolute left-[97px] top-[804px] w-[1246px] mobile:left-[16px] mobile:top-[413px] mobile:w-[370px]",

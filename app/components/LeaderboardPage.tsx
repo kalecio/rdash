@@ -1,136 +1,66 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Footer } from "./Footer";
-import { Header } from "./Header";
+import { useState } from "react";
+import { DesignPage } from "./DesignPage";
 
 const players = [
-  { rank: "01", name: "ZNHELV", score: "234", image: "/assets/red-game-4.png", alt: "" },
-  { rank: "02", name: "Wendell", score: "163", image: "/assets/red-game-5.png", alt: "" },
-  { rank: "03", name: "Onorius", score: "124", image: "/assets/red-game-6.png", alt: "" },
+  { rank: 1, name: "ZNHELV", score: 234, image: "znhelv" },
+  { rank: 2, name: "Wendell", score: 163, image: "wendell" },
+  { rank: 3, name: "Onorius", score: 124, image: "onorius" },
 ];
 
-export function LeaderboardPage() {
-  return (
-    <div className={styles.leaderboardSite}>
-      <Header />
-        <div className={styles.leaderboardSubbar}>
-          <nav aria-label="Navegação do ranking">
-            <Link href="/eventos">Próximos</Link>
-            <Link href="/eventos">Anteriores</Link>
-            <Link href="/leaderboard" aria-current="page">Leaderboard</Link>
-          </nav>
-          <span className={styles.leaderboardSearch} aria-hidden="true"><i /></span>
-        </div>
+function SearchIcon() {
+  return <svg aria-hidden="true" viewBox="0 0 24 24" className="h-full w-full fill-none stroke-current stroke-[2.5]"><circle cx="10.5" cy="10.5" r="7.5" /><path d="m16 16 6 6" /></svg>;
+}
 
-      <main className={styles.leaderboardMain}>
-        <section className={styles.leaderboardContent} aria-labelledby="leaderboard-title">
-          <h1 id="leaderboard-title">LEADERBOARD</h1>
-          <div className={styles.leaderboardTableWrap}>
-            <table className={styles.leaderboardTable}>
-              <thead>
-                <tr><th scope="col">#</th><th scope="col">Jogador</th><th scope="col">Score</th></tr>
-              </thead>
-              <tbody>
-                {players.map((player) => (
-                  <tr key={player.rank}>
-                    <td className={styles.leaderboardRank}>{player.rank}</td>
-                    <td>
-                      <span className={styles.leaderboardPlayer}>
-                        <Image src={player.image} alt={player.alt} width={46} height={46} unoptimized />
-                        <span>{player.name}</span>
-                      </span>
-                    </td>
-                    <td className={styles.leaderboardScore}>{player.score}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <div className={styles.leaderboardSound} aria-hidden="true">
-          <span className={styles.leaderboardRecord}>♫</span>
-          <span className={styles.leaderboardEqualizer}><i /><i /><i /></span>
-        </div>
-      </main>
-      <Footer />
-    </div>
+export function LeaderboardPage() {
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const visiblePlayers = players.filter(player => player.name.toLocaleLowerCase("pt-BR").includes(query.toLocaleLowerCase("pt-BR")));
+
+  return (
+    <DesignPage activePage="Eventos" desktopHeight={1925} mobileHeight={1238} background="#5f0808" mobileTexture mobileSearch={
+      <button type="button" aria-label="Buscar jogadores" aria-expanded={searchOpen} onClick={() => setSearchOpen(!searchOpen)} className="absolute left-[282px] top-[66px] z-30 hidden h-[32px] w-[32px] mobile:block"><SearchIcon /></button>
+    }>
+      <nav aria-label="Navegação do ranking" className="absolute left-[88px] top-[93px] z-10 flex h-[38px] w-[1266px] items-center gap-[24px] bg-[#881411] px-[56px] text-[16px] leading-[21px] shadow-[0_4px_4px_#0004] mobile:hidden">
+        <Link href="/eventos" className="px-[8px] font-medium">Próximos</Link>
+        <Link href="/eventos" className="px-[8px]">Anteriores</Link>
+        <Link href="/leaderboard" aria-current="page" className="px-[8px] font-bold underline">Leaderboard</Link>
+        <button type="button" aria-label="Buscar jogadores" aria-expanded={searchOpen} onClick={() => setSearchOpen(!searchOpen)} className="ml-auto h-[24px] w-[24px] cursor-pointer"><SearchIcon /></button>
+      </nav>
+      {searchOpen && <label className="absolute left-[100px] top-[145px] z-10 rounded bg-[#881411] p-[8px] mobile:left-[16px] mobile:top-[113px]">Buscar jogadores <input autoFocus value={query} onChange={event => setQuery(event.target.value)} className="ml-[8px] w-[200px] rounded bg-white px-[8px] text-black" /></label>}
+      <section aria-labelledby="leaderboard-title">
+        <h1 id="leaderboard-title" className="absolute left-[98px] top-[250px] text-[48px] font-bold leading-[62px] mobile:left-[16px] mobile:top-[137px] mobile:text-[32px] mobile:leading-[42px]">LEADERBOARD</h1>
+        <p className="absolute left-[16px] top-[187px] hidden w-[370px] text-[20px] font-medium leading-[26px] mobile:block">Confira os jogadores que estão no<br />nosso TOP 3.</p>
+        <table aria-label="Ranking dos jogadores" className="absolute left-[100px] top-[344px] block h-[805px] w-[1240px] overflow-hidden rounded-[15px] bg-[#8f0c0c] ring-2 ring-inset ring-[#5f0808] mobile:left-[16px] mobile:top-[263px] mobile:h-[405px] mobile:w-[370px]">
+          <thead className="block bg-[#e51313]">
+            <tr className={`${styles.columns} h-[83px] items-center pt-[7px] text-[28px] font-semibold leading-[36px] mobile:h-[51px] mobile:pt-0 mobile:text-[16px] mobile:leading-[24px]`}>
+              <th scope="col" className="text-[32px] leading-[42px] mobile:pl-[24px] mobile:text-left mobile:text-[16px] mobile:leading-[24px]">#</th>
+              <th scope="col" className="mobile:pl-[14px]">Jogador</th>
+              <th scope="col" className="mobile:pr-[19px]">Score</th>
+            </tr>
+          </thead>
+          <tbody className="relative block h-[722px] mobile:h-[354px]">
+            {visiblePlayers.map((player, index) => (
+              <tr key={player.rank} style={{ "--row-top": `${59 + index * 223}px`, "--mobile-row-top": `${44 + index * 97}px` } as React.CSSProperties} className={`${styles.columns} absolute top-[var(--row-top)] h-[82px] items-center text-[32px] font-semibold leading-[42px] mobile:top-[var(--mobile-row-top)] mobile:h-[36px] mobile:text-[20px] mobile:leading-[24px]`}>
+                <td className="text-center mobile:pl-[24px] mobile:text-left"><span className="mobile:hidden">{String(player.rank).padStart(2, "0")}</span><span className="hidden mobile:inline">{player.rank}</span></td>
+                <td className="flex items-center justify-center gap-[16px] mobile:justify-start mobile:gap-[18px] mobile:pl-[7px]">
+                  <Image src={`/assets/leaderboard-${player.image}.png`} alt="" width={82} height={82} className="h-[82px] w-[82px] shrink-0 mobile:h-[36px] mobile:w-[36px]" unoptimized />
+                  <span>{player.name}</span>
+                </td>
+                <td className="pr-[108px] text-right font-medium mobile:pr-[48px] mobile:font-semibold">{player.score}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        {visiblePlayers.length === 0 && <p role="status" className="absolute left-[100px] top-[470px] text-[24px] mobile:left-[32px] mobile:top-[350px] mobile:text-[20px]">Nenhum jogador encontrado.</p>}
+      </section>
+    </DesignPage>
   );
 }
 
 const styles = {
-  leaderboardSite: [
-    "leaderboard-site",
-    "relative isolate w-[1440px] [zoom:min(1,_calc(100vw_/_1440px))] m-[0_auto] overflow-x-clip text-white bg-[#881411]",
-    "mobile:w-[402px] mobile:[zoom:min(1,_calc(100vw_/_402px))]",
-  ].join(" "),
-  leaderboardSubbar: [
-    "relative z-10 mobile:mt-[113px]",
-    "[&_a]:[transition:color_.16s_ease]",
-    "[&_a:hover]:text-[#ffd6d4]",
-    "h-[40px] flex items-center justify-between p-[0_7.4%] [border-top:1px_solid_rgba(255,255,255,.2)] bg-[#bc2925] shadow-[0_5px_0_rgba(30,0,0,.38)] text-[length:12px]",
-    "[&_nav]:flex [&_nav]:items-center [&_nav]:gap-[34px] [&_nav]:h-full",
-    "[&_a[aria-current='page']]:text-white [&_a[aria-current='page']]:[text-shadow:0_1px_4px_#500]",
-    "compact:h-[40px] compact:p-[0_22px]",
-    "narrow:[&_nav]:gap-[20px]",
-  ].join(" "),
-  leaderboardSearch: [
-    "relative w-[16px] h-[16px] [border:2px_solid_#fff] rounded-[50%]",
-    "[&::after]:absolute [&::after]:right-[-5px] [&::after]:bottom-[-3px] [&::after]:w-[7px] [&::after]:h-[2px] [&::after]:content-[''] [&::after]:bg-[#fff] [&::after]:[transform:rotate(48deg)]",
-  ].join(" "),
-  leaderboardMain: [
-    "relative min-h-[1405px] overflow-hidden bg-[#4a100d]",
-    "[&::before]:absolute [&::before]:inset-0 [&::before]:z-0 [&::before]:content-[''] [&::before]:opacity-[.76] [&::before]:[background-image:linear-gradient(90deg,_rgba(25,3,3,.66)_0_7px,_transparent_8px_270px),_linear-gradient(90deg,_rgba(25,3,3,.66)_0_7px,_transparent_8px_270px),_repeating-linear-gradient(0deg,_transparent_0_48px,_rgba(25,3,3,.65)_49px_55px)] [&::before]:[background-size:270px_110px,_270px_110px,_100%_55px] [&::before]:[background-position:0_0,_135px_55px,_0_0]",
-    "[&::after]:absolute [&::after]:inset-0 [&::after]:z-0 [&::after]:content-[''] [&::after]:pointer-events-none [&::after]:[background:linear-gradient(180deg,_rgba(32,3,2,.32),_transparent_25%,_rgba(30,2,2,.16))]",
-    "compact:min-h-[940px]",
-    "compact:[&::before]:[background-size:240px_130px]",
-  ].join(" "),
-  leaderboardContent: [
-    "relative z-1 w-[min(86.2%,_1240px)] m-[0_auto] pt-[144px]",
-    "[&_h1]:m-[0_0_45px] [&_h1]:text-[length:38px] [&_h1]:font-[750] [&_h1]:tracking-[-.035em] [&_h1]:leading-[1.05]",
-    "compact:w-[calc(100%_-_40px)] compact:pt-[165px]",
-    "compact:[&_h1]:mb-[24px] compact:[&_h1]:text-[length:clamp(27px,_8vw,_38px)]",
-  ].join(" "),
-  leaderboardTableWrap: [
-    "overflow-hidden rounded-[14px] bg-[#881f19] shadow-[0_22px_40px_rgba(24,0,0,.18)]",
-    "compact:rounded-[10px]",
-  ].join(" "),
-  leaderboardTable: [
-    "w-full border-collapse table-fixed text-[length:18px]",
-    "[&_thead]:h-[84px] [&_thead]:bg-[#e53935]",
-    "[&_th]:text-[length:17px] [&_th]:font-bold",
-    "[&_th:first-child]:w-[23%] [&_th:first-child]:pl-[8.2%] [&_th:first-child]:text-left",
-    "[&_td:first-child]:w-[23%] [&_td:first-child]:pl-[8.2%] [&_td:first-child]:text-left",
-    "[&_th:nth-child(2)]:text-center",
-    "[&_th:last-child]:w-[22%] [&_th:last-child]:pr-[8.2%] [&_th:last-child]:text-right",
-    "[&_td:last-child]:w-[22%] [&_td:last-child]:pr-[8.2%] [&_td:last-child]:text-right",
-    "[&_tbody_tr]:h-[240px]",
-    "compact:text-[length:14px]",
-    "compact:[&_thead]:h-[58px]",
-    "compact:[&_th]:text-[length:13px]",
-    "compact:[&_tbody_tr]:h-[156px]",
-    "compact:[&_th:first-child]:w-[20%] compact:[&_th:first-child]:pl-[7%]",
-    "compact:[&_td:first-child]:w-[20%] compact:[&_td:first-child]:pl-[7%]",
-    "compact:[&_th:last-child]:w-[20%] compact:[&_th:last-child]:pr-[7%]",
-    "compact:[&_td:last-child]:w-[20%] compact:[&_td:last-child]:pr-[7%]",
-    "narrow:text-[length:12px]",
-    "narrow:[&_tbody_tr]:h-[130px]",
-  ].join(" "),
-  leaderboardRank: "leaderboard-rank",
-  leaderboardPlayer: [
-    "flex items-center justify-center gap-[16px]",
-    "[&_img]:flex-[0_0_auto] [&_img]:w-[46px] [&_img]:h-[46px] [&_img]:rounded-[4px] [&_img]:object-cover",
-    "compact:gap-[8px]",
-    "compact:[&_img]:w-[34px] compact:[&_img]:h-[34px]",
-    "narrow:flex-col narrow:gap-[5px]",
-  ].join(" "),
-  leaderboardScore: "tabular-nums",
-  leaderboardSound: [
-    "absolute z-2 top-[420px] right-[7.4%] flex flex-col items-center",
-    "compact:top-[300px] compact:right-[13px] compact:[transform:scale(.78)] compact:origin-top-right",
-  ].join(" "),
-  leaderboardRecord: "relative z-1 grid w-[42px] h-[42px] place-items-center [border:4px_solid_#fff] rounded-[50%] bg-[#fff] text-[#28242a] text-[length:25px] shadow-[0_2px_5px_#0005]",
-  leaderboardEqualizer: [
-    "flex gap-[4px] items-center justify-center w-[74px] h-[32px] mt-[-4px] [border:4px_solid_#fff] rounded-[9px] bg-[#e53935] shadow-[0_3px_4px_#0005]",
-    "[&_i]:block [&_i]:w-[8px] [&_i]:h-[8px] [&_i]:[border:2px_solid_white] [&_i]:rounded-[50%] [&_i]:bg-[#2452b6]",
-  ].join(" "),
+  columns: "grid w-full grid-cols-[232px_712px_296px] mobile:grid-cols-[48px_208px_114px]",
 };

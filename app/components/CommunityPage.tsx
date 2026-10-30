@@ -35,7 +35,6 @@ export function CommunityPage() {
           </picture>
         </section>
 
-        <Image src="/assets/community-controls.svg" alt="" aria-hidden="true" width={134} height={150} className="absolute z-2 left-[1270px] top-[544px] mobile:hidden" unoptimized />
 
         <section className={styles.join} aria-labelledby="community-join-title">
           <Image src="/assets/community-join-panel.svg" alt="" width={1440} height={357} className="absolute left-0 top-[106px] max-w-none mobile:hidden" unoptimized />

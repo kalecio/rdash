@@ -15,13 +15,12 @@ const nav = [
 type HeaderProps = {
   background?: string;
   blurUntilHero?: boolean;
-  showProfile?: boolean;
   communityDesign?: boolean;
   figmaNav?: boolean;
   activePage?: string;
 };
 
-export function Header({ background = "#e53a36", blurUntilHero = true, showProfile = false, communityDesign = false, figmaNav = false, activePage = "Comunidade" }: HeaderProps) {
+export function Header({ background = "#e53a36", blurUntilHero = true, communityDesign = false, figmaNav = false, activePage = "Comunidade" }: HeaderProps) {
   const designNavigation = communityDesign || figmaNav;
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroBlurActive, setHeroBlurActive] = useState(false);
@@ -82,17 +81,6 @@ export function Header({ background = "#e53a36", blurUntilHero = true, showProfi
             </Link>
           ))}
         </nav>
-        {(showProfile || designNavigation) && (
-          <div className={designNavigation ? "w-[56px] h-[56px] shrink-0 mobile:hidden" : styles.redHeaderProfile} aria-hidden="true">
-            <Image
-              src={designNavigation ? "/assets/community-avatar.png" : "/assets/red-profile.png"}
-              alt=""
-              width={56}
-              height={56}
-              className={designNavigation ? "w-full h-full" : styles.redHeaderProfileImage}
-            />
-          </div>
-        )}
         <div className={`${styles.mobileMenu}${menuOpen ? " is-open" : ""}`}>
           <button
             className={designNavigation ? styles.communityMenuToggle : styles.mobileMenuToggle}
@@ -119,8 +107,8 @@ export function Header({ background = "#e53a36", blurUntilHero = true, showProfi
 }
 
 const styles = {
-  communityHeader: "sticky z-20 top-0 isolate h-[133px] text-white mobile:absolute mobile:top-[49px] mobile:left-0 mobile:w-[402px] mobile:h-[64px] mobile:bg-[#e53935]",
-  communityNavbar: "absolute z-1 inset-[4px_100px_auto] h-[80px] flex items-center justify-between [&_>_nav]:ml-auto [&_>_nav]:mr-[32px] [&_>_nav]:flex [&_>_nav]:items-center [&_>_nav]:gap-[40px] [&_>_nav]:px-[24px] [&_>_nav_a]:shrink-0 [&_>_nav_a:hover]:opacity-80 mobile:inset-0 mobile:h-[64px] mobile:px-[16px] mobile:[&_>_nav]:hidden mobile:[&_>_nav]:mr-0",
+  communityHeader: "pointer-events-none sticky z-20 top-0 isolate h-[133px] text-white mobile:absolute mobile:top-[49px] mobile:left-0 mobile:w-[402px] mobile:h-[64px] mobile:bg-[#e53935]",
+  communityNavbar: "pointer-events-auto absolute z-1 inset-[4px_100px_auto] h-[80px] flex items-center justify-between [&_>_nav]:ml-auto [&_>_nav]:mr-[32px] [&_>_nav]:flex [&_>_nav]:items-center [&_>_nav]:gap-[40px] [&_>_nav]:px-[24px] [&_>_nav_a]:shrink-0 [&_>_nav_a:hover]:opacity-80 mobile:inset-0 mobile:h-[64px] mobile:px-[16px] mobile:[&_>_nav]:hidden mobile:[&_>_nav]:mr-0",
   communityMenuToggle: "relative flex h-[37px] w-[48px] cursor-pointer flex-col items-center justify-center gap-[5px] border-0 bg-transparent p-0 [&_span]:block [&_span]:h-[4px] [&_span]:w-[32px] [&_span]:bg-white",
   communityLogo: "flex w-[80px] h-[80px] items-center justify-center p-[8px] [&_img]:object-contain mobile:w-[72px] mobile:h-[72px] mobile:p-[12px] mobile:[&_img]:w-[48px] mobile:[&_img]:h-[48px]",
 
@@ -151,8 +139,6 @@ const styles = {
     "mobile:p-0 mobile:w-[32px] mobile:h-[32px]",
     "mobile:[&_img]:w-[32px] mobile:[&_img]:h-[32px]",
   ].join(" "),
-  redHeaderProfile: "w-[56px] h-[56px] overflow-hidden rounded-full border-[3px] border-white mobile:hidden",
-  redHeaderProfileImage: "w-full h-full object-cover scale-[2.7] origin-[50%_12%]",
   mobileMenu: [
     "mobile-menu",
     "hidden",

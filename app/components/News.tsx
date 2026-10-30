@@ -82,7 +82,7 @@ export function News() {
             <div className={styles.newsSlot} key={story.title}>
               <article className={styles.newsCard}>
                 <a href="/comunidade" className={styles.newsImageFrame} tabIndex={-1}>
-                  <Image src={story.image} alt="" fill sizes="(max-width: 600px) 189px, 668px" />
+                  <Image src={story.image} alt="" fill unoptimized sizes="(max-width: 600px) 189px, 668px" />
                 </a>
                 <h2>{story.title}</h2>
                 <p>{story.copy}</p>

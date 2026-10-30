@@ -47,7 +47,7 @@ const styles = {
     "mobile:[&::before]:rounded-[inherit]",
   ].join(" "),
   eventArtWrap: [
-    "absolute left-[101.92px] top-[-138px] w-[710px] h-[386px] [transform:rotate(3.7deg)] overflow-hidden",
+    "absolute z-4 left-[101.92px] top-[-138px] w-[710px] h-[386px] [transform:rotate(3.7deg)] overflow-hidden",
     "mobile:left-[29.14px] mobile:top-[72.26px] mobile:w-[200.42px] mobile:h-[108.86px] mobile:transform-none mobile:overflow-visible",
   ].join(" "),
   eventArt: [

@@ -12,8 +12,7 @@ export default function Home() {
       <div className="absolute inset-x-0 top-[4653px] mobile:left-[16px] mobile:top-[1452px]">
         <DesignFooter />
       </div>
-      <Image src="/assets/home-footer-mascot.png" alt="" width={241} height={230} className="absolute left-[-17px] top-[4536px] z-10 mobile:left-[14px] mobile:top-[1402px] mobile:h-[65px] mobile:w-[68px]" unoptimized />
-      <Image src="/assets/community-controls.svg" alt="" width={134} height={150} className="absolute left-[1270px] top-[544px] z-10 mobile:hidden" unoptimized />
+      <Image src="/assets/home-footer-mascot.gif" alt="" width={241} height={230} className="absolute left-[-17px] top-[4536px] z-10 mobile:left-[14px] mobile:top-[1402px] mobile:h-[65px] mobile:w-[68px]" unoptimized />
     </div>
   );
 }
