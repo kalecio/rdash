@@ -9,7 +9,6 @@ const nav = [
   ["Comunidade", "/comunidade"],
   ["Eventos", "/eventos"],
   ["Galeria", "/galeria"],
-  ["Loja", "/loja"],
 ];
 
 type HeaderProps = {
