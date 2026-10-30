@@ -12,7 +12,11 @@
     "cms:seed": "tsx scripts/seed.ts",
     "cms:migrate": "payload migrate",
     "cms:migrate:create": "payload migrate:create",
-    "test:cms": "tsx --test tests/*.test.ts"
+    "test:cms": "node --import tsx --test --test-force-exit tests/*.test.ts",
+    "storybook": "storybook dev -p 6006 --host 0.0.0.0 --no-open --disable-telemetry",
+    "build-storybook": "storybook build --disable-telemetry",
+    "test:unit": "vitest run",
+    "test": "node node_modules/vitest/vitest.mjs run && node --import tsx --test --test-force-exit tests/*.test.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.92.1",
@@ -30,15 +34,27 @@
   },
   "devDependencies": {
     "@next/env": "16.3.3",
+    "@storybook/addon-a11y": "^10.6.5",
+    "@storybook/addon-docs": "^10.6.5",
+    "@storybook/nextjs-vite": "^10.6.5",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "@types/node": "^24.19.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "esbuild": "^0.28.2",
     "eslint": "^9",
     "eslint-config-next": "16.3.3",
+    "jsdom": "^30.1.3",
+    "storybook": "^10.6.5",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   },
   "packageManager": "pnpm@10.34.5",
   "engines": {

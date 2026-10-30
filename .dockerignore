@@ -6,5 +6,6 @@ node_modules
 data
 media
 coverage
+storybook-static
 *.tsbuildinfo
 .DS_Store

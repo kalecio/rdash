@@ -46,6 +46,21 @@ services:
       timeout: 10s
       start_period: 90s
       retries: 3
+  storybook:
+    profiles: ['tools']
+    build: .
+    ports:
+      - '127.0.0.1:6006:6006'
+    environment:
+      STORYBOOK_DISABLE_TELEMETRY: '1'
+      NODE_ENV: development
+    command: ['node', 'node_modules/storybook/dist/bin/dispatcher.js', 'dev', '--port', '6006', '--host', '0.0.0.0', '--no-open', '--ci', '--disable-telemetry']
+    healthcheck:
+      test: ['CMD', 'node', '-e', "fetch('http://localhost:6006/index.json').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
 volumes:
   postgres_data:
   media_data:

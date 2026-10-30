@@ -90,3 +90,11 @@ O build precisa de acesso à internet para instalar dependências e obter as fon
 Configure as variáveis `SMTP_*` para enviar e-mails de recuperação de senha. Sem SMTP, o Payload registra os e-mails no log, apenas para desenvolvimento.
 
 Faça backups regulares do PostgreSQL e do volume de uploads e valide a restauração. Uma cópia apenas do repositório não inclui os conteúdos editados. Guarde `.env` fora do Git e mantenha o `PAYLOAD_SECRET` estável nas atualizações.
+
+## Storybook e componentes
+
+O catálogo fica em http://localhost:6006. Para iniciá-lo com Docker, execute `docker compose --profile tools up -d --build storybook`. Esse serviço é opcional, fica acessível apenas na máquina local e não precisa do PostgreSQL. Para desenvolvimento sem Docker, use `pnpm storybook`; `pnpm build-storybook` gera o catálogo estático em `storybook-static/`.
+
+O Storybook inclui exemplos dos carrosséis, artes com bordas, controles de tema/música e páginas completas. A barra superior alterna Guilty Gear, Street Fighter e Under Night. Os exemplos utilizam dados públicos de demonstração e não consultam o CMS. A apresentação reutilizável fica em `components/`; a integração com o site permanece em `app/components/`. Veja `components/README.md` para os contratos e limites de reutilização.
+
+`pnpm test:unit` executa os testes de componentes com Vitest e Testing Library; `pnpm test:cms` executa os testes do CMS e dos assets. `pnpm test` executa as duas suítes. A cobertura inclui as cores e a textura das três páginas nos três temas, seleção de tema por teclado, estados de reprodução, escala do carrossel e integridade das artes exportadas.
