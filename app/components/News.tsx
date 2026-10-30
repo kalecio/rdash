@@ -7,17 +7,17 @@ const stories = [
   {
     title: "Resultados do Último Torneio",
     copy: "Confira como foi o TOP 8 do nosso último torneio realizado no Festival do Orgulho Nerd.",
-    image: "/assets/red-news-1.png",
+    image: "/assets/home-news-3.png",
   },
   {
     title: "Lançamento da Nossa Mascote",
     copy: "Isso mesmo! O RecifeDash agora tem uma mascote! Quem nos visitou no Orgulho Nerd já conhece ela, mas hoje revelamos mais detalhes sobre a nossa adorável menina-caranguejo.",
-    image: "/assets/red-news-2.png",
+    image: "/assets/home-news-2.png",
   },
   {
     title: "Jogatina Mensal",
     copy: "Esse Domingo estaremos de volta na QB GEEK. Dessa vez nossa atração principal do dia será o bom e velho torneio de Under Night In-Birth II.",
-    image: "/assets/red-event-poster.png",
+    image: "/assets/home-news-1.png",
   },
 ];
 
@@ -32,7 +32,7 @@ export function News() {
 
     const updateScale = () => {
       const viewportBounds = viewport.getBoundingClientRect();
-      const center = viewportBounds.left + viewportBounds.width / 2;
+      const center = viewportBounds.left + viewportBounds.width / 2 - (viewport.clientWidth < 600 ? 11.3 : 0);
       const travel = viewportBounds.width * 0.393;
 
       const cards = Array.from(track.querySelectorAll<HTMLElement>(".news-slot")).flatMap((slot) => {
@@ -53,10 +53,13 @@ export function News() {
       cards.forEach(({ card }) => card.classList.toggle("is-side", card !== centeredCard.card));
     };
 
-    viewport.scrollLeft = viewport.clientWidth < 600 ? 160 : 566;
-    updateScale();
+    const centerOnResize = () => {
+      viewport.scrollLeft = viewport.clientWidth < 600 ? 160 : 566;
+      updateScale();
+    };
+    centerOnResize();
     viewport.addEventListener("scroll", updateScale, { passive: true });
-    const observer = new ResizeObserver(updateScale);
+    const observer = new ResizeObserver(centerOnResize);
     observer.observe(viewport);
 
     return () => {
@@ -108,7 +111,7 @@ const styles = {
   ].join(" "),
   newsTrack: [
     "relative flex w-[2573px] h-[506px] pl-[566px] [transform:translateX(-128px)]",
-    "mobile:w-[722px] mobile:h-[143px] mobile:pr-[121px] mobile:pl-[121px] mobile:transform-none",
+    "mobile:w-[722px] mobile:h-[143px] mobile:pr-[121px] mobile:pl-[121px] mobile:[transform:translateX(-11.3px)]",
   ].join(" "),
   newsSlot: [
     "news-slot",
@@ -129,8 +132,8 @@ const styles = {
     "mobile:[&.is-side_p]:top-[98.1px] mobile:[&.is-side_p]:text-[length:5.98px]",
   ].join(" "),
   newsImageFrame: [
-    "absolute top-0 left-0 w-full h-[312px] overflow-hidden [border:16px_solid_#e53935] rounded-[15px]",
-    "[&_img]:object-cover",
-    "mobile:h-[88px] mobile:[border-width:4.5px] mobile:rounded-[5px]",
+    "absolute top-0 left-0 w-full h-[312px] overflow-hidden ",
+    "[&_img]:object-fill",
+    "mobile:h-[88px] ",
   ].join(" "),
 };

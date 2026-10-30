@@ -1,8 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
+import { DesignFooter } from "./DesignFooter";
 import { Header } from "./Header";
-
-const about = "A R-DASH é uma comunidade dedicada ao universo de Anime Fighters em Recife, Pernambuco — conectando jogadores, fortalecendo a cena local e criando experiências para quem vive a cultura competitiva dentro e fora do game.";
 
 export function CommunityPage() {
   return (
@@ -56,29 +54,7 @@ export function CommunityPage() {
         </section>
       </main>
 
-      <footer className={styles.footer}>
-        <Image src="/assets/community-footer.svg" alt="" width={1440} height={518} className="absolute left-0 top-[-25px] max-w-none mobile:hidden" unoptimized />
-        <section className={styles.footerAbout}>
-          <Image src="/assets/community-footer-logo.png" alt="R-DASH" width={79} height={79} className="mobile:hidden" />
-          <h2><span className="mobile:hidden">Sobre nós</span><span className="hidden mobile:inline">Sobre</span></h2>
-          <p>{about}</p>
-        </section>
-        <section className={styles.footerSitemap}>
-          <h2>Sitemap</h2>
-          <div className="flex gap-[48px]">
-            <ul><li><Link href="/">Home</Link></li><li><Link href="/comunidade">Comunidade</Link></li><li><Link href="/eventos">Eventos</Link></li></ul>
-            <ul><li><Link href="/galeria">Galeria</Link></li><li><Link href="/loja">Loja</Link></li></ul>
-          </div>
-        </section>
-        <section className={styles.footerSocial}>
-          <h2>Social</h2>
-          <ul>
-            <li><a href="https://www.instagram.com/r_dash_/">Instagram</a></li>
-            <li><a href="https://www.facebook.com/rdashrecife">Facebook</a></li>
-            <li><a href="https://www.youtube.com/@rdashrecife">Youtube</a></li>
-          </ul>
-        </section>
-      </footer>
+      <div className="absolute left-0 top-[2277px] mobile:left-[16px] mobile:top-[1135px]"><DesignFooter /></div>
     </div>
   );
 }
@@ -95,8 +71,4 @@ const styles = {
   mascot: "absolute left-0 top-0 z-1 block h-[588px] w-[538px] mobile:left-[168px] mobile:top-[239px] mobile:h-[94px] mobile:w-[66px]",
   joinCopy: "absolute left-[543px] top-[129px] [&_h2]:m-0 [&_h2]:whitespace-nowrap [&_h2]:text-[64px] [&_h2]:font-bold [&_h2]:italic [&_h2]:leading-[83px] [&_p]:mt-[16px] [&_p]:text-[24px] [&_p]:font-medium [&_p]:leading-[31px] mobile:left-[41px] mobile:top-[35px] mobile:w-[319px] mobile:text-center mobile:[&_h2]:text-[32px] mobile:[&_h2]:leading-[42px] mobile:[&_p]:mt-[8px] mobile:[&_p]:text-[20px] mobile:[&_p]:leading-[26px]",
   joinLinks: "absolute left-[538px] top-[324px] flex gap-[32px] [&_a]:flex [&_a]:h-[80px] [&_a]:w-[392px] [&_a]:items-center [&_a]:justify-center [&_a]:rounded-[10px] [&_a]:bg-[#5f0808] [&_a]:text-[24px] [&_a]:font-medium [&_a]:leading-[16px] [&_a:hover]:bg-[#42100f] mobile:left-[86px] mobile:top-[131px] mobile:flex-col mobile:gap-[20px] mobile:[&_a]:h-[47px] mobile:[&_a]:w-[229px] mobile:[&_a]:text-[20px]",
-  footer: "absolute left-0 top-[2277px] z-5 h-[493px] w-[1440px] text-[#fafafa] [&_h2]:text-[22px] [&_h2]:font-semibold [&_h2]:leading-[29px] [&_ul]:m-0 [&_ul]:list-none [&_ul]:p-0 [&_li]:mt-[8px] [&_li:first-child]:mt-0 [&_a]:block [&_a]:p-[8px] [&_a]:text-[16px] [&_a]:leading-[21px] [&_a]:tracking-[-.176px] [&_a:hover]:underline mobile:left-[16px] mobile:top-[1135px] mobile:h-[495px] mobile:w-[370px] mobile:rounded-t-[16px] mobile:bg-[#e53935] mobile:shadow-[0_12px_50.5px_rgba(0,0,0,.25)]",
-  footerAbout: "absolute left-[100px] top-[111.68px] w-[313.21px] [&_h2]:mt-[8px] [&_h2]:p-[8px] [&_p]:mt-[8px] [&_p]:p-[8px] [&_p]:text-[16px] [&_p]:leading-[21px] mobile:left-[8px] mobile:top-[32px] mobile:w-[354px] mobile:[&_h2]:mt-0",
-  footerSitemap: "absolute left-[675.61px] top-[125.94px] [&_h2]:mb-[8px] [&_h2]:p-[8px] mobile:hidden",
-  footerSocial: "absolute left-[1146px] top-[125.94px] [&_h2]:mb-[8px] [&_h2]:p-[8px] mobile:left-[8px] mobile:top-[251px]",
 };

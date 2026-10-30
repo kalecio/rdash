@@ -1,13 +1,12 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Footer } from "../../components/Footer";
-import { GalleryImagePlaceholder } from "../../components/GalleryImagePlaceholder";
-import { Header } from "../../components/Header";
 import type { Metadata } from "next";
+import { DesignPage } from "../../components/DesignPage";
+import { galleryAlbums } from "../../components/galleryData";
 
 export const metadata: Metadata = {
   title: "Fotos da Fight Night",
-  description:
-    "Veja os registros da Fight Night da comunidade R-DASH: partidas, jogadores e momentos de uma noite de jogos de luta em Recife.",
+  description: "Veja os registros da Fight Night da comunidade R-DASH: partidas, jogadores e momentos de uma noite de jogos de luta em Recife.",
 };
 
 const photos = [
@@ -24,82 +23,20 @@ const photos = [
 
 export default function FightNightAlbumPage() {
   return (
-    <div className={styles.gallerySite}>
-      <Header />
-      <main className={styles.galleryMain}>
-        <div className={styles.galleryContent}>
-          <Link className={styles.galleryBack} href="/galeria"><span aria-hidden="true">←</span> GALERIA</Link>
-          <header className={styles.galleryIntro}>
-            <h1>MOMENTOS DA FIGHT NIGHT</h1>
-            <p>
-              Mais uma noite especial na @coffee_park, marcada por partidas disputadas,
-              conversas entre Dashers e controles passando de mão em mão.
-              Um registro de tudo que fez esse encontro inesquecível.
-            </p>
-          </header>
-          <section className={styles.galleryPhotoGrid} aria-label="Fotos da Fight Night">
-            {photos.map((description, index) => (
-              <figure className={`${styles.galleryPhoto} gallery-photo-${index + 1}`} key={description}>
-                <GalleryImagePlaceholder description={description} />
-              </figure>
-            ))}
-          </section>
-        </div>
-      </main>
-      <div className="absolute inset-x-0 top-[2250px] mobile:relative mobile:top-auto">
-        <Footer />
-      </div>
-    </div>
+    <DesignPage activePage="Galeria" desktopHeight={2800} mobileHeight={1866}>
+      <Link href="/galeria" className="sr-only focus:not-sr-only">Voltar à galeria</Link>
+      <header className="absolute left-[100px] top-[210px] w-[1240px] mobile:left-[16px] mobile:top-[137px] mobile:w-[370px]">
+        <h1 className="text-[48px] font-bold uppercase leading-[62px] mobile:text-[32px] mobile:leading-[42px]">Momentos da Fight Night</h1>
+        <p className="mt-[8px] text-[32px] font-medium leading-[42px] text-[#ededed] mobile:text-[20px] mobile:leading-[26px]">{galleryAlbums[1].description}</p>
+      </header>
+      <section aria-label="Fotos da Fight Night" className="absolute left-[100px] top-[480px] grid w-[1240px] grid-cols-3 auto-rows-[394px] gap-[32px] mobile:left-[16px] mobile:top-[487px] mobile:w-[370px] mobile:grid-cols-2 mobile:auto-rows-[151px] mobile:gap-x-[8px] mobile:gap-y-[16px]">
+        {photos.map((description, index) => (
+          <picture key={description} className={`block overflow-hidden rounded-[16px] mobile:rounded-[4.77px] ${index === 0 ? "col-span-3 mobile:col-span-2" : ""}`}>
+            <source media="(max-width: 600px)" srcSet={`/assets/gallery-photo-${index+1}-mobile.png`} />
+            <Image src={`/assets/gallery-photo-${index+1}.png`} alt={description} width={index === 0 ? 1240 : 588} height={index === 0 ? 394 : 591} className="h-full w-full object-cover" unoptimized />
+          </picture>
+        ))}
+      </section>
+    </DesignPage>
   );
 }
-
-const styles = {
-  gallerySite: [
-    "gallery-site gallery-detail-site",
-    "relative isolate w-[1440px] h-[2743px] m-[0_auto] overflow-x-clip [zoom:min(1,_calc(100vw_/_1440px))] text-white bg-[#881411]",
-    "mobile:w-[402px] mobile:h-auto mobile:min-h-[100vh] mobile:m-[0_auto] mobile:[zoom:min(1,_calc(100vw_/_402px))] mobile:overflow-x-clip",
-  ].join(" "),
-  galleryMain: [
-    "absolute inset-0 w-[1440px] h-[2250px] overflow-hidden bg-[#881411]",
-    "[&::before]:content-[''] [&::before]:absolute [&::before]:inset-[88px_0_0] [&::before]:z-0 [&::before]:pointer-events-none [&::before]:opacity-[.94] [&::before]:[background-color:#681712] [&::before]:[background-image:linear-gradient(180deg,_rgba(43,4,4,.18),_transparent_18%,_rgba(43,4,4,.2)),_url('/assets/brickwall.png')] [&::before]:[background-size:100%_100%,_100%_auto] [&::before]:[background-position:0_0,_center_top] [&::before]:[background-repeat:no-repeat,_repeat-y] [&::before]:[background-blend-mode:normal,_screen]",
-    "mobile:relative mobile:inset-auto mobile:mt-[113px] mobile:w-full mobile:h-auto mobile:min-h-0 mobile:overflow-visible mobile:pb-[46px] mobile:bg-[#881411]",
-    "mobile:[&::before]:inset-0 mobile:[&::before]:opacity-[.94] mobile:[&::before]:[background-size:100%_100%,_100%_auto]",
-  ].join(" "),
-  galleryContent: [
-    "relative z-1 w-[1240px] m-[0_auto] pt-[230px]",
-    "mobile:w-[calc(100%_-_40px)] mobile:pt-[48px]",
-    "mobile:[.gallery-detail-site_&]:pt-[36px]",
-  ].join(" "),
-  galleryBack: [
-    "inline-flex items-center gap-[9px] m-[0_0_24px] text-[length:14px] font-bold",
-    "[&_span]:grid [&_span]:w-[30px] [&_span]:h-[30px] [&_span]:place-items-center [&_span]:[border:1px_solid_rgba(255,255,255,.6)] [&_span]:rounded-[50%] [&_span]:text-[length:18px]",
-    "[&:hover]:text-[#ffd4d2]",
-    "mobile:gap-[7px] mobile:mb-[15px] mobile:text-[length:10px]",
-    "mobile:[&_span]:w-[23px] mobile:[&_span]:h-[23px] mobile:[&_span]:text-[length:15px]",
-  ].join(" "),
-  galleryIntro: [
-    "max-w-[900px] m-[0_0_50px] mb-[35px]",
-    "[&_h1]:m-[0_0_8px] [&_h1]:text-[length:40px] [&_h1]:leading-[1.1] [&_h1]:font-extrabold",
-    "[&_p]:m-0 [&_p]:text-[length:26px] [&_p]:leading-[1.35] [&_p]:max-w-[790px]",
-    "mobile:mb-[16px]",
-    "mobile:[&_h1]:mb-[4px] mobile:[&_h1]:text-[length:19px]",
-    "mobile:[&_p]:text-[length:10px] mobile:[&_p]:leading-[1.4]",
-  ].join(" "),
-  galleryPhotoGrid: [
-    "grid grid-cols-3 auto-rows-[330px] gap-[18px]",
-    "mobile:grid-cols-2 mobile:auto-rows-[140px] mobile:gap-[8px]",
-  ].join(" "),
-  galleryPhoto: [
-    "gallery-photo",
-    "relative min-w-0 m-0 overflow-hidden [border:7px_solid_#df3833] rounded-[12px] bg-[#54100e] shadow-[0_7px_17px_rgba(0,0,0,.3)]",
-    "[&_img]:object-cover [&_img]:[transition:transform_.35s_ease]",
-    "[&:hover_img]:[transform:scale(1.04)]",
-    "[&.gallery-photo-1]:[grid-row:span_2]",
-    "[&.gallery-photo-4]:[grid-column:span_2]",
-    "[&.gallery-photo-7]:[grid-column:span_2]",
-    "mobile:[border-width:4px] mobile:rounded-[7px]",
-    "mobile:[&.gallery-photo-1]:[grid-row:span_2]",
-    "mobile:[&.gallery-photo-4]:[grid-column:span_1]",
-    "mobile:[&.gallery-photo-7]:[grid-column:span_1]",
-  ].join(" "),
-};

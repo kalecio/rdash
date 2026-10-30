@@ -3,7 +3,7 @@ import Image from "next/image";
 export function Hero() {
   return (
     <section id="home-hero" className={styles.redHero} aria-label="R-DASH">
-      <Image className={styles.heroBackdrop} src="/assets/red-hero-bg.png" alt="" width={1440} height={900} priority />
+      <Image className={styles.heroBackdrop} src="/assets/home-hero-background.png" alt="" width={1440} height={611} priority />
       <div className={styles.heroShade} />
       <Image className={styles.heroSol} src="/assets/red-sol.png" alt="Sol Badguy" width={202} height={431} priority />
       <Image className={styles.heroKy} src="/assets/red-ky.png" alt="Ky Kiske" width={376} height={431} priority />
@@ -16,11 +16,11 @@ export function Hero() {
 
 const styles = {
   redHero: [
-    "absolute inset-[0_0_auto] h-[716px] overflow-hidden z-1 bg-[#881411]",
+    "absolute inset-[0_0_auto] h-[716px] overflow-hidden z-1",
     "mobile:absolute mobile:inset-[0_auto_auto_0] mobile:w-[402px] mobile:h-[305px] mobile:bg-[#5b0c0a]",
   ].join(" "),
   heroBackdrop: [
-    "absolute left-0 top-[-209px] w-[1440px] h-[900px] max-w-none",
+    "absolute left-0 top-0 w-[1440px] h-[611px] max-w-none",
     "mobile:left-[-82px] mobile:top-[50px] mobile:w-[566px] mobile:h-[240px] mobile:object-cover",
   ].join(" "),
   heroShade: [
@@ -40,7 +40,7 @@ const styles = {
     "mobile:left-[130px] mobile:top-[129px] mobile:w-[143px] mobile:h-[73px]",
   ].join(" "),
   heroRedEdge: [
-    "absolute z-2 top-[592px] left-0 w-[1440px] h-[124px] rounded-[15px_15px_0_0] bg-[#df3833]",
+    "absolute z-2 top-[592px] left-0 w-[1440px] h-[38px] rounded-[15px_15px_0_0] bg-[#df3833]",
     "mobile:left-[-61px] mobile:top-[290px] mobile:w-[525px] mobile:h-[14px] mobile:rounded-[9px]",
   ].join(" "),
   heroRip: [

@@ -17,9 +17,12 @@ type HeaderProps = {
   blurUntilHero?: boolean;
   showProfile?: boolean;
   communityDesign?: boolean;
+  figmaNav?: boolean;
+  activePage?: string;
 };
 
-export function Header({ background = "#e53a36", blurUntilHero = true, showProfile = false, communityDesign = false }: HeaderProps) {
+export function Header({ background = "#e53a36", blurUntilHero = true, showProfile = false, communityDesign = false, figmaNav = false, activePage = "Comunidade" }: HeaderProps) {
+  const designNavigation = communityDesign || figmaNav;
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroBlurActive, setHeroBlurActive] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -50,7 +53,7 @@ export function Header({ background = "#e53a36", blurUntilHero = true, showProfi
   const blur = backdropActive ? "blur(6.6px)" : "none";
 
   return (
-    <header ref={headerRef} className={communityDesign ? styles.communityHeader : styles.redHeader}>
+    <header ref={headerRef} className={designNavigation ? styles.communityHeader : styles.redHeader}>
       <div
         hidden={communityDesign}
         aria-hidden="true"
@@ -68,31 +71,31 @@ export function Header({ background = "#e53a36", blurUntilHero = true, showProfi
       ) : (
         <img src="/assets/red-nav.svg?v=2" alt="" className={styles.redNavArt} />
       )}
-      <div className={communityDesign ? styles.communityNavbar : styles.redNavbar}>
-        <Link href="/" aria-label="R-DASH página inicial" className={communityDesign ? styles.communityLogo : styles.redHeaderLogo}>
+      <div className={designNavigation ? styles.communityNavbar : styles.redNavbar}>
+        <Link href="/" aria-label="R-DASH página inicial" className={designNavigation ? styles.communityLogo : styles.redHeaderLogo}>
           <Image src="/assets/rdash_mini_logo_vazado.png" alt="R-DASH" width={64} height={64} priority />
         </Link>
         <nav aria-label="Navegação principal">
           {nav.map(([label, href], index) => (
-            <Link key={href} href={href} aria-current={communityDesign && href === "/comunidade" ? "page" : undefined}>
-              {communityDesign ? <Image src={`/assets/community-nav-${["home", "community", "events", "gallery", "shop"][index]}.svg`} alt={label} width={[98, 193, 136, 114, 75][index]} height={31} unoptimized /> : label}
+            <Link key={href} href={href} aria-current={designNavigation && label === activePage ? "page" : undefined}>
+              {designNavigation ? <Image src={label === "Comunidade" && activePage !== label ? "/assets/design-nav-community.svg" : label === activePage && label === "Eventos" ? "/assets/design-nav-events-active.svg" : label === activePage && label === "Galeria" ? "/assets/design-nav-gallery-active.svg" : `/assets/community-nav-${["home", "community", "events", "gallery", "shop"][index]}.svg`} alt={label} width={[98, 193, 136, 114, 75][index]} height={31} unoptimized /> : label}
             </Link>
           ))}
         </nav>
-        {(showProfile || communityDesign) && (
-          <div className={communityDesign ? "w-[56px] h-[56px] shrink-0 mobile:hidden" : styles.redHeaderProfile} aria-hidden="true">
+        {(showProfile || designNavigation) && (
+          <div className={designNavigation ? "w-[56px] h-[56px] shrink-0 mobile:hidden" : styles.redHeaderProfile} aria-hidden="true">
             <Image
-              src={communityDesign ? "/assets/community-avatar.png" : "/assets/red-profile.png"}
+              src={designNavigation ? "/assets/community-avatar.png" : "/assets/red-profile.png"}
               alt=""
               width={56}
               height={56}
-              className={communityDesign ? "w-full h-full" : styles.redHeaderProfileImage}
+              className={designNavigation ? "w-full h-full" : styles.redHeaderProfileImage}
             />
           </div>
         )}
         <div className={`${styles.mobileMenu}${menuOpen ? " is-open" : ""}`}>
           <button
-            className={communityDesign ? styles.communityMenuToggle : styles.mobileMenuToggle}
+            className={designNavigation ? styles.communityMenuToggle : styles.mobileMenuToggle}
             type="button"
             aria-label={menuOpen ? "Fechar menu de navegação" : "Abrir menu de navegação"}
             aria-expanded={menuOpen}

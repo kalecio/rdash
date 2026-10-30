@@ -1,11 +1,11 @@
 import Image from "next/image";
 
 const games = [
-  ["Under Night In-Birth II", "/assets/red-game-5.png"],
-  ["Blazblue", "/assets/red-game-1.png"],
-  ["Guilty Gear Strive", "/assets/red-game-2.png"],
-  ["Asuka 120% Limit Over", "/assets/red-game-3.png"],
-  ["Vampire Savior", "/assets/red-game-4.png"],
+  ["Under Night In-Birth II", "/assets/home-game-1.png"],
+  ["Blazblue", "/assets/home-game-2.png"],
+  ["Guilty Gear Strive", "/assets/home-game-3.png"],
+  ["Asuka 120% Limit Over", "/assets/home-game-4.png"],
+  ["Vampire Savior", "/assets/home-game-5.png"],
   ["Dragon Ball FighterZ", "/assets/red-game-6.png"],
 ];
 
@@ -45,7 +45,7 @@ const styles = {
   ].join(" "),
   gameTrack: [
     "absolute top-[218px] left-[115px] flex items-start gap-[60px] w-max",
-    "mobile:top-0 mobile:left-[12px] mobile:gap-[8px]",
+    "mobile:top-0 mobile:left-[18.5px] mobile:gap-[16.92px]",
   ].join(" "),
   gameCard: [
     "flex-[0_0_244px] w-[244px] text-center",
@@ -54,8 +54,8 @@ const styles = {
     "mobile:[&_h2]:min-h-[36px] mobile:[&_h2]:m-[6px_0_0] mobile:[&_h2]:text-[length:5.65px] mobile:[&_h2]:leading-[1.2] mobile:[&_h2]:tracking-[.06px]",
   ].join(" "),
   gameImage: [
-    "relative block w-[244px] h-[432px] overflow-hidden [border:10px_solid_#e53935] rounded-[15px]",
+    "relative block w-[244px] h-[432px] overflow-hidden ",
     "[&_img]:object-cover",
-    "mobile:w-[68.88px] mobile:h-[121.95px] mobile:[border-width:4.5px] mobile:rounded-[5px]",
+    "mobile:w-[68.88px] mobile:h-[121.95px] ",
   ].join(" "),
 };
