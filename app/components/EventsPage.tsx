@@ -26,7 +26,7 @@ export function EventsPage() {
   function changeFilter(next: "upcoming" | "past") {setFilter(next);setSelected(null);setQuery("");}
 
   return (
-    <DesignPage activePage="Eventos" desktopHeight={event ? 1838 : Math.max(1906, 2874 + (count - 3) * 484)} mobileHeight={event ? 1187 : Math.max(1000, 1696 + (count - 3) * 238)} background="#5f0808" mobileSearch={<button type="button" className="absolute left-[282px] top-[66px] z-30 hidden h-[32px] w-[32px] mobile:block" aria-label={page.searchLabel} onClick={()=>setSearchOpen(!searchOpen)}><SearchIcon /></button>}>
+    <DesignPage activePage="Eventos" desktopHeight={event ? 1838 : Math.max(1906, 2874 + (count - 3) * 484)} mobileHeight={event ? 1187 : Math.max(1000, 1696 + (count - 3) * 238)} background="dark" mobileSearch={<button type="button" className="absolute left-[282px] top-[66px] z-30 hidden h-[32px] w-[32px] mobile:block" aria-label={page.searchLabel} onClick={()=>setSearchOpen(!searchOpen)}><SearchIcon /></button>}>
       <nav aria-label="Categorias de eventos" className={styles.subnav}>
         <button type="button" aria-current={filter === "upcoming" ? "page" : undefined} onClick={()=>changeFilter("upcoming")}>{page.upcomingLabel}</button>
         <button type="button" aria-current={filter === "past" ? "page" : undefined} onClick={()=>changeFilter("past")}>{page.pastLabel}</button>

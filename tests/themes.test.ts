@@ -46,3 +46,17 @@ test('Street Fighter and Under Night hero assets contain multiple animation fram
     assert.equal(metadata.loop, 0)
   }
 })
+
+test('carousel exports include the complete artwork beyond Figma viewport edges', async () => {
+  for (const theme of ['blue', 'purple'] as const) {
+    const assets = themeAssets(theme, defaultThemeSettings)
+    for (const [key, minRatio, maxRatio] of [
+      ['/assets/home-game-5.png', 0.57, 0.58],
+      ['/assets/home-news-1.png', 2, 2.02],
+      ['/assets/home-news-3.png', 2, 2.02],
+    ] as const) {
+      const { width = 0, height = 1 } = await sharp(path.join(process.cwd(), 'public', assets[key])).metadata()
+      assert.ok(width / height >= minRatio && width / height <= maxRatio, `${theme}: clipped export ${key}`)
+    }
+  }
+})

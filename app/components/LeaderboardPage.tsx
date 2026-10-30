@@ -21,7 +21,7 @@ export function LeaderboardPage() {
   const visiblePlayers = players.filter(player => player.name.toLocaleLowerCase("pt-BR").includes(query.toLocaleLowerCase("pt-BR")));
 
   return (
-    <DesignPage activePage="Eventos" desktopHeight={1925 + Math.max(0, players.length - 3) * 223} mobileHeight={1238 + Math.max(0, players.length - 3) * 97} background="#5f0808" mobileTexture mobileSearch={
+    <DesignPage activePage="Eventos" desktopHeight={1925 + Math.max(0, players.length - 3) * 223} mobileHeight={1238 + Math.max(0, players.length - 3) * 97} background="dark" mobileSearch={
       <button type="button" aria-label={page.searchLabel} aria-expanded={searchOpen} onClick={() => setSearchOpen(!searchOpen)} className="absolute left-[282px] top-[66px] z-30 hidden h-[32px] w-[32px] mobile:block"><SearchIcon /></button>
     }>
       <nav aria-label="Navegação do ranking" className="absolute left-[88px] top-[93px] z-10 flex h-[38px] w-[1266px] items-center gap-[24px] bg-[var(--cms-background)] px-[56px] text-[16px] leading-[21px] shadow-[0_4px_4px_#0004] mobile:hidden">
