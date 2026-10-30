@@ -8,6 +8,10 @@ A camada `components/` recebe dados e callbacks por props. Ela não consulta o P
 - `NewsCarousel`: lista de notícias, escala em função da posição e tratamento de resize. Recebe `LinkComponent` e itens por props.
 - `ThemeMusicControls`: componente controlado. Recebe opções de tema, estado de reprodução, mensagens e callbacks. Não inicia áudio nem salva preferências.
 
+## Catálogo de páginas e blocos do site
+
+O Storybook também documenta os componentes visuais integrados ao conteúdo do Payload: cabeçalho e rodapé, convite à comunidade, destaque de evento, listagem de eventos, cards e páginas de álbuns e leaderboard. `CommunityJoinSection` e `GalleryAlbumCard` são usados tanto nas páginas reais quanto nas histórias, para que os exemplos continuem refletindo a implementação publicada. O leaderboard e os blocos de eventos recebem exemplos de páginas completas, incluindo interações como busca e navegação.
+
 Os carrosséis e controles usam o CSS compartilhado e `next/image` nas artes de título/ícones. Para reutilizá-los em outro projeto Next.js, leve os componentes, seus assets e os estilos; para outro framework, adapte essas imagens. `ArtworkFrame` e `PageBackground` podem ser usados diretamente em qualquer aplicação React.
 
 ## Contratos

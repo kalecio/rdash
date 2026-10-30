@@ -2,12 +2,9 @@ import type { Preview } from '@storybook/nextjs-vite'
 import { SiteContentProvider } from '../app/components/SiteContent'
 import { isThemeId } from '../lib/themes'
 import { storyContent } from './fixtures'
-import { DM_Sans, Rubik_Dirt } from 'next/font/google'
 import { PencilBorderSvg } from '../app/components/PencilBorder'
 import '../app/globals.css'
-
-const dmSans = DM_Sans({ variable: '--font-dm-sans', subsets: ['latin'] })
-const rubikDirt = Rubik_Dirt({ variable: '--font-rubik-dirt', weight: '400', subsets: ['latin'] })
+import './fonts.css'
 
 const preview: Preview = {
   tags: ['autodocs'],
@@ -18,7 +15,7 @@ const preview: Preview = {
   parameters: { layout: 'fullscreen', nextjs: { appDirectory: true }, a11y: { test: 'todo' } },
   decorators: [(Story, context) => {
     const theme = isThemeId(context.globals.theme) ? context.globals.theme : 'red'
-    return <div className={`${dmSans.variable} ${rubikDirt.variable}`}><PencilBorderSvg /><SiteContentProvider key={theme} initialTheme={theme} content={storyContent}><Story /></SiteContentProvider></div>
+    return <div className="storybook-fonts"><PencilBorderSvg /><SiteContentProvider key={theme} initialTheme={theme} content={storyContent}><Story /></SiteContentProvider></div>
   }],
 }
 export default preview
