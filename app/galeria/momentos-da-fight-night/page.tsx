@@ -2,6 +2,13 @@ import Link from "next/link";
 import { Footer } from "../../components/Footer";
 import { GalleryImagePlaceholder } from "../../components/GalleryImagePlaceholder";
 import { Header } from "../../components/Header";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Fotos da Fight Night",
+  description:
+    "Veja os registros da Fight Night da comunidade R-DASH: partidas, jogadores e momentos de uma noite de jogos de luta em Recife.",
+};
 
 const photos = [
   "Encontro da comunidade R-DASH",
@@ -49,14 +56,14 @@ export default function FightNightAlbumPage() {
 const styles = {
   gallerySite: [
     "gallery-site gallery-detail-site",
-    "relative isolate w-[1440px] h-[2743px] m-[0_auto] overflow-hidden [zoom:min(1,_calc(100vw_/_1440px))] text-white bg-[#881411]",
-    "mobile:w-[402px] mobile:h-auto mobile:min-h-[100vh] mobile:m-[0_auto] mobile:[zoom:min(1,_calc(100vw_/_402px))] mobile:overflow-hidden",
+    "relative isolate w-[1440px] h-[2743px] m-[0_auto] overflow-x-clip [zoom:min(1,_calc(100vw_/_1440px))] text-white bg-[#881411]",
+    "mobile:w-[402px] mobile:h-auto mobile:min-h-[100vh] mobile:m-[0_auto] mobile:[zoom:min(1,_calc(100vw_/_402px))] mobile:overflow-x-clip",
   ].join(" "),
   galleryMain: [
     "absolute inset-0 w-[1440px] h-[2250px] overflow-hidden bg-[#881411]",
-    "[&::before]:content-[''] [&::before]:absolute [&::before]:inset-[88px_0_0] [&::before]:z-0 [&::before]:pointer-events-none [&::before]:opacity-[.94] [&::before]:[background:linear-gradient(180deg,_rgba(43,4,4,.18),_transparent_18%,_rgba(43,4,4,.2)),_url('/assets/gallery-brick-wall.svg')_center_top_/_270px_140px_repeat]",
+    "[&::before]:content-[''] [&::before]:absolute [&::before]:inset-[88px_0_0] [&::before]:z-0 [&::before]:pointer-events-none [&::before]:opacity-[.94] [&::before]:[background-color:#681712] [&::before]:[background-image:linear-gradient(180deg,_rgba(43,4,4,.18),_transparent_18%,_rgba(43,4,4,.2)),_url('/assets/brickwall.png')] [&::before]:[background-size:100%_100%,_100%_auto] [&::before]:[background-position:0_0,_center_top] [&::before]:[background-repeat:no-repeat,_repeat-y] [&::before]:[background-blend-mode:normal,_screen]",
     "mobile:relative mobile:inset-auto mobile:mt-[113px] mobile:w-full mobile:h-auto mobile:min-h-0 mobile:overflow-visible mobile:pb-[46px] mobile:bg-[#881411]",
-    "mobile:[&::before]:inset-0 mobile:[&::before]:opacity-[.94] mobile:[&::before]:[background-size:270px_140px]",
+    "mobile:[&::before]:inset-0 mobile:[&::before]:opacity-[.94] mobile:[&::before]:[background-size:100%_100%,_100%_auto]",
   ].join(" "),
   galleryContent: [
     "relative z-1 w-[1240px] m-[0_auto] pt-[230px]",

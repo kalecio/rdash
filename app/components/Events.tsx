@@ -21,12 +21,14 @@ export function Events() {
           <h3>Local:</h3>
           <Image src="/assets/red-event-map.png" alt="Mapa da Galeria Hora Center" width={455} height={128} className={styles.eventMap} />
           <p className={styles.eventAddress}>Galeria Hora Center<br />Rua da Hora, 345 - Espinheiro</p>
-          <a className={styles.eventJoin} href="/eventos">
-            <img className={styles.eventJoinEdge} src="/assets/red-join-button-edge.svg" alt="" />
-            <Image className={styles.eventJoinFace} src="/assets/red-join-button-face.png" alt="" width={320} height={115} />
-            <span>Inscreva-se</span>
-          </a>
-          <p className={styles.eventPrice}>Valor: R$10 (pago no local)</p>
+          <div className={styles.eventActions}>
+            <a className={styles.eventJoin} href="/eventos">
+              <img className={styles.eventJoinEdge} src="/assets/red-join-button-edge.svg" alt="" />
+              <Image className={styles.eventJoinFace} src="/assets/red-join-button-face.png" alt="" width={320} height={115} />
+              <span>Inscreva-se</span>
+            </a>
+            <p className={styles.eventPrice}>Valor: R$10 (pago no local)</p>
+          </div>
         </div>
       </div>
       <div className={styles.eventSticker}>TORNEIO • COMUNIDADE • RECIFE</div>
@@ -94,12 +96,15 @@ const styles = {
   ].join(" "),
   eventMap: "absolute left-[19px] top-[331px] w-[455px] h-[128px] rounded-[15px] object-cover",
   eventAddress: "absolute left-[23px] top-[475px] w-[336px] m-0 text-[length:16px] leading-[1.35] [text-shadow:2px_3px_3px_#000]",
+  eventActions: [
+    "absolute top-[567px] inset-x-0 flex flex-col items-center gap-[10px]",
+  ].join(" "),
   eventJoin: [
-    "absolute left-[65px] top-[567px] block w-[326px] h-[121px] overflow-hidden text-white [font-family:'NUKLEAR',_var(--font-dm-sans),_Arial,_sans-serif] text-[length:30.76px] font-normal [text-shadow:2px_3px_1px_#222]",
+    "relative block w-[326px] h-[121px] overflow-hidden text-white [font-family:'NUKLEAR',_var(--font-dm-sans),_Arial,_sans-serif] text-[length:30.76px] font-normal [text-shadow:2px_3px_1px_#222]",
     "[&_span]:absolute [&_span]:z-2 [&_span]:inset-[0_auto_auto_0] [&_span]:grid [&_span]:w-[320px] [&_span]:h-[115px] [&_span]:place-items-center [&_span]:text-center [&_span]:whitespace-nowrap",
   ].join(" "),
   eventJoinEdge: "absolute max-w-none object-fill top-[6px] left-[3px]",
   eventJoinFace: "absolute max-w-none object-fill top-0 left-0 w-[320px] h-[115px] rounded-[29px]",
-  eventPrice: "absolute top-[699px] left-[108px] m-0 text-center text-[length:20px] whitespace-nowrap",
+  eventPrice: "relative m-0 text-center text-[length:20px] whitespace-nowrap",
   eventSticker: "hidden",
 };

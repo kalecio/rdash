@@ -60,7 +60,7 @@ export function LeaderboardPage() {
 const styles = {
   leaderboardSite: [
     "leaderboard-site",
-    "relative isolate w-[1440px] [zoom:min(1,_calc(100vw_/_1440px))] m-[0_auto] overflow-hidden text-white bg-[#881411]",
+    "relative isolate w-[1440px] [zoom:min(1,_calc(100vw_/_1440px))] m-[0_auto] overflow-x-clip text-white bg-[#881411]",
     "mobile:w-[402px] mobile:[zoom:min(1,_calc(100vw_/_402px))]",
   ].join(" "),
   leaderboardSubbar: [

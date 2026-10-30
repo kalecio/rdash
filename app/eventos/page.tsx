@@ -4,8 +4,9 @@ import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 
 export const metadata: Metadata = {
-  title: "Eventos | R-DASH",
-  description: "Confira os encontros e torneios da comunidade R-DASH em Recife.",
+  title: "Eventos e torneios de jogos de luta",
+  description:
+    "Veja os próximos encontros, torneios e partidas da comunidade R-DASH em Recife. Jogue, conheça outros fãs e participe.",
 };
 
 const pastEvents = [
@@ -105,8 +106,8 @@ export default function EventosPage() {
 const styles = {
   eventsSite: [
     "events-site",
-    "relative isolate w-[1440px] [zoom:min(1,_calc(100vw_/_1440px))] m-[0_auto] overflow-hidden text-white bg-[#881411]",
-    "mobile:w-[402px] mobile:[zoom:min(1,_calc(100vw_/_402px))] mobile:overflow-hidden",
+    "relative isolate w-[1440px] [zoom:min(1,_calc(100vw_/_1440px))] m-[0_auto] overflow-x-clip text-white bg-[#881411]",
+    "mobile:w-[402px] mobile:[zoom:min(1,_calc(100vw_/_402px))] mobile:overflow-x-clip",
   ].join(" "),
   eventsMain: [
     "relative -mt-[133px] mobile:mt-0 min-h-[2330px] overflow-hidden bg-[#881411]",

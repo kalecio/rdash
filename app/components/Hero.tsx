@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function Hero() {
   return (
-    <section className={styles.redHero} aria-label="R-DASH">
+    <section id="home-hero" className={styles.redHero} aria-label="R-DASH">
       <Image className={styles.heroBackdrop} src="/assets/red-hero-bg.png" alt="" width={1440} height={900} priority />
       <div className={styles.heroShade} />
       <Image className={styles.heroSol} src="/assets/red-sol.png" alt="Sol Badguy" width={202} height={431} priority />

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const nav = [
   ["Home", "/"],
@@ -12,12 +12,56 @@ const nav = [
   ["Loja", "/loja"],
 ];
 
-export function Header() {
+type HeaderProps = {
+  background?: string;
+  blurUntilHero?: boolean;
+  showProfile?: boolean;
+};
+
+export function Header({ background = "#e53a36", blurUntilHero = true, showProfile = false }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [heroBlurActive, setHeroBlurActive] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!blurUntilHero) return;
+
+    const updateBlur = () => {
+      const hero = document.getElementById("home-hero");
+      const header = headerRef.current;
+      if (!hero || !header) {
+        setHeroBlurActive(false);
+        return;
+      }
+      setHeroBlurActive(hero.getBoundingClientRect().bottom > header.getBoundingClientRect().bottom);
+    };
+
+    updateBlur();
+    window.addEventListener("scroll", updateBlur, { passive: true });
+    window.addEventListener("resize", updateBlur);
+    return () => {
+      window.removeEventListener("scroll", updateBlur);
+      window.removeEventListener("resize", updateBlur);
+    };
+  }, [blurUntilHero]);
+
+  const backdropActive = !blurUntilHero || heroBlurActive;
+  const blur = backdropActive ? "blur(6.6px)" : "none";
 
   return (
-    <header className={styles.redHeader}>
-      <img src="/assets/red-nav.svg" alt="" className={styles.redNavArt} />
+    <header ref={headerRef} className={styles.redHeader}>
+      <div
+        aria-hidden="true"
+        className={styles.redHeaderBackdrop}
+        style={{
+          backgroundColor: backdropActive
+            ? `color-mix(in srgb, ${background} 42%, transparent)`
+            : background,
+          backdropFilter: blur,
+          WebkitBackdropFilter: blur,
+        }}
+      />
+      <img src="/assets/red-nav.svg?v=2" alt="" className={styles.redNavArt} />
       <div className={styles.redNavbar}>
         <Link href="/" aria-label="R-DASH página inicial" className={styles.redHeaderLogo}>
           <Image src="/assets/rdash_mini_logo_vazado.png" alt="R-DASH" width={64} height={64} priority />
@@ -25,6 +69,17 @@ export function Header() {
         <nav aria-label="Navegação principal">
           {nav.map(([label, href]) => <Link key={href} href={href}>{label}</Link>)}
         </nav>
+        {showProfile && (
+          <div className={styles.redHeaderProfile} aria-hidden="true">
+            <Image
+              src="/assets/red-profile.png"
+              alt=""
+              width={56}
+              height={56}
+              className={styles.redHeaderProfileImage}
+            />
+          </div>
+        )}
         <div className={`${styles.mobileMenu}${menuOpen ? " is-open" : ""}`}>
           <button
             className={styles.mobileMenuToggle}
@@ -52,16 +107,20 @@ export function Header() {
 
 const styles = {
   redHeader: [
-    "sticky z-20 top-0 h-[133px] text-white [-webkit-backdrop-filter:blur(6.6px)] backdrop-filter-[blur(6.6px)]",
-    "mobile:absolute mobile:top-[49px] mobile:left-0 mobile:w-[402px] mobile:h-[64px] mobile:bg-[#5b0c0a] mobile:[-webkit-backdrop-filter:none] mobile:backdrop-filter-[none]",
+    "sticky z-20 top-0 isolate h-[133px] text-white",
+    "mobile:top-0 mobile:left-0 mobile:w-[402px] mobile:h-[64px]",
+  ].join(" "),
+  redHeaderBackdrop: [
+    "absolute inset-0 z-0 [clip-path:polygon(0_0,_100%_0,_100%_66.6%,_94.2%_100%,_94.2%_66.6%,_5.8%_66.6%,_5.8%_100%,_0_66.6%)]",
+    "mobile:[clip-path:none] mobile:[backdrop-filter:none!important] mobile:[-webkit-backdrop-filter:none!important]",
   ].join(" "),
   redNavArt: [
     "absolute left-[-6px] top-[-6px] max-w-none",
     "mobile:hidden",
   ].join(" "),
   redNavbar: [
-    "absolute inset-[4px_100px_auto] h-[80px] flex items-center justify-between",
-    "[&_>_nav]:flex [&_nav]:items-center [&_nav]:gap-[40px] [&_nav]:p-[4rem_1rem] [&_nav]:font-sans [&_nav]:text-[length:16px] [&_nav]:font-normal [&_nav]:tracking-[-.176px]",
+    "absolute z-1 inset-[4px_100px_auto] h-[80px] flex items-center justify-between",
+    "[&_>_nav]:flex [&_nav]:items-center [&_nav]:gap-[40px] [&_nav]:p-[4rem_1rem] [&_nav]:[font-family:var(--font-rubik-dirt),_sans-serif] [&_nav]:text-[length:16px] [&_nav]:font-normal [&_nav]:tracking-[-.176px]",
     "[&_nav_a:hover]:text-[#ffd4d2]",
     "compact:inset-x-[56px]",
     "compact:[&_nav]:gap-[40px]",
@@ -74,6 +133,8 @@ const styles = {
     "mobile:p-0 mobile:w-[32px] mobile:h-[32px]",
     "mobile:[&_img]:w-[32px] mobile:[&_img]:h-[32px]",
   ].join(" "),
+  redHeaderProfile: "w-[56px] h-[56px] overflow-hidden rounded-full border-[3px] border-white mobile:hidden",
+  redHeaderProfileImage: "w-full h-full object-cover scale-[2.7] origin-[50%_12%]",
   mobileMenu: [
     "mobile-menu",
     "hidden",
