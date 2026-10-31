@@ -1,7 +1,6 @@
-import type { Metadata } from 'next'
 import { getSiteContent } from './content'
+import { buildPageMetadata, type SEOPage } from '@/lib/seo'
 
-export async function pageMetadata(page: 'home' | 'community' | 'eventsPage' | 'galleryPage' | 'leaderboardPage'): Promise<Metadata> {
-  const data = (await getSiteContent())[page]
-  return { title: data.seoTitle, description: data.seoDescription }
+export async function pageMetadata(page: SEOPage) {
+  return buildPageMetadata(await getSiteContent(), page)
 }

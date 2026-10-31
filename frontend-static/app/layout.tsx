@@ -1,3 +1,4 @@
+import { rootMetadata, communityStructuredData, serializeStructuredData } from '@/lib/seo'
 import type { Metadata } from 'next'
 import type { CSSProperties, ReactNode } from 'react'
 import { DM_Sans, Geist, Geist_Mono, Rubik_Dirt } from 'next/font/google'
@@ -13,8 +14,7 @@ const dmSans = DM_Sans({ variable: '--font-dm-sans', subsets: ['latin'] })
 const rubikDirt = Rubik_Dirt({ variable: '--font-rubik-dirt', weight: '400', subsets: ['latin'] })
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { site } = await getSiteContent()
-  return { title: { default: `${site.title} | ${site.titleSuffix}`, template: `%s | ${site.titleSuffix}` }, description: site.description }
+  return rootMetadata(await getSiteContent())
 }
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
@@ -25,6 +25,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang={content.site.language} data-theme={initialTheme} style={variables} className={`${geistSans.variable} ${geistMono.variable} ${dmSans.variable} ${rubikDirt.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeStructuredData(communityStructuredData(content)) }} />
         <SiteContentProvider content={content} initialTheme={initialTheme}><PencilBorderSvg />{children}</SiteContentProvider>
       </body>
     </html>

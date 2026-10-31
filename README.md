@@ -53,6 +53,10 @@ O projeto Pages deve ser do tipo Direct Upload. A primeira configuração cria o
 
 ## O que editar
 
+O SEO usa `SITE_URL` (padrão `https://rdash.kalec.io`) como endereço público, separado do endereço local do CMS. Títulos e descrições continuam editáveis nos campos de buscadores de cada página. A exportação inclui URLs canônicas, Open Graph, Twitter Cards, dados estruturados da comunidade, `robots.txt` e `sitemap.xml` com as páginas e os álbuns publicados. Textos SEO originais do seed recebem a nova redação sobre FGC e anime fighters; textos personalizados no CMS são preservados. O link de loja fica oculto no header e no footer, inclusive quando ainda está salvo no CMS.
+
+Depois do deploy, envie `https://rdash.kalec.io/sitemap.xml` no Google Search Console da propriedade do domínio para solicitar a descoberta das páginas.
+
 - **Configurações do site:** nome, SEO geral, idioma, navegação (texto, destino, ordem e visibilidade), rodapé, links e cores.
 - **Home:** visibilidade das seções, nomes dos carrosséis, informações e links do próximo evento. O grupo avançado permite ajustar posições verticais e alturas no desktop/mobile.
 - **Comunidade:** títulos, textos, descrições de imagens e links do convite.

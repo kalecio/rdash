@@ -1,7 +1,7 @@
 // Initial content imported from the approved site. The CMS owns subsequent edits.
 export const defaultSite = {
   name: "R-DASH", title: "Comunidade de jogos de luta em Recife", titleSuffix: "R-DASH Recife",
-  description: "Encontre a comunidade R-DASH em Recife: jogos de luta, Anime Fighters, torneios, encontros e novidades para jogadores.",
+  description: "Faça parte da R-DASH, comunidade de jogos de luta e anime fighters em Recife, Pernambuco. Encontre a FGC local em torneios, jogatinas e encontros.",
   language: "pt-BR",
   navigation: [
     { label: "Home", href: "/", enabled: true, image: "/assets/community-nav-home.svg", activeImage: "/assets/community-nav-home.svg", imageLabel: "Home", imageWidth: 98 },
@@ -12,14 +12,14 @@ export const defaultSite = {
   footer: {
     title: "Sobre nós", mobileTitle: "Sobre", sitemapTitle: "Sitemap", socialTitle: "Social",
     about: "A R-DASH é uma comunidade dedicada ao universo de Anime Fighters em Recife, Pernambuco — conectando jogadores, fortalecendo a cena local e criando experiências para quem vive a cultura competitiva dentro e fora do game.",
-    links: [{ label: "Home", href: "/" }, { label: "Comunidade", href: "/comunidade" }, { label: "Eventos", href: "/eventos" }, { label: "Galeria", href: "/galeria" }, { label: "Loja", href: "/loja" }],
+    links: [{ label: "Home", href: "/" }, { label: "Comunidade", href: "/comunidade" }, { label: "Eventos", href: "/eventos" }, { label: "Galeria", href: "/galeria" }],
     social: [{ label: "Instagram", href: "https://www.instagram.com/r_dash_/" }, { label: "Facebook", href: "https://www.facebook.com/rdashrecife" }, { label: "Youtube", href: "https://www.youtube.com/@rdashrecife" }],
   },
   theme: { background: "#881411", accent: "#e53935", dark: "#5f0808", card: "#c21d19", table: "#8f0c0c", tableHeader: "#e51313", text: "#ffffff", mutedText: "#ededed" },
 };
 
 export const defaultHome = {
-  seoTitle: "Comunidade de jogos de luta em Recife", seoDescription: defaultSite.description,
+  seoTitle: "Jogos de luta e anime fighters em Recife", seoDescription: defaultSite.description,
   heroEnabled: true, eventEnabled: true, newsEnabled: true, gamesEnabled: true, tvEnabled: true, mascotEnabled: true,
   newsTitle: "Novidades", gamesTitle: "Nossos jogos",
   layout: {
@@ -34,7 +34,7 @@ export const defaultHome = {
   },
 };
 export const defaultCommunity = {
-  seoTitle: "Comunidade de Anime Fighters em Recife", seoDescription: "Conheça a R-DASH, a comunidade de jogos de luta em Recife.",
+  seoTitle: "Comunidade de Anime Fighters em Recife", seoDescription: "Conheça a R-DASH e a FGC de Recife: uma comunidade de anime fighters com encontros, jogatinas e torneios para quem está começando ou já compete.",
   title: "COMUNIDADE", subtitle: "Saiba mais sobre a nossa comunidade!",
   heroAlt: "Jogadores participando de um encontro da comunidade R-DASH", locationAlt: "Partida de jogo de luta em uma TV durante um encontro R-DASH",
   whoTitle: "QUEM SOMOS?", whoText: "Somos uma comunidade Recifense focada em Anime Fighters. Temos encontros mensais com torneios e premiações.",
@@ -43,18 +43,18 @@ export const defaultCommunity = {
   links: [{ label: "Nosso Discord", href: "https://discord.com/" }, { label: "Nosso Grupo no WPP", href: "https://chat.whatsapp.com/" }],
 };
 export const defaultEventsPage = {
-  seoTitle: "Eventos e torneios", seoDescription: "Confira os próximos encontros e torneios da R-DASH em Recife.",
+  seoTitle: "Eventos e torneios de jogos de luta em Recife", seoDescription: "Confira os eventos, torneios e jogatinas da R-DASH em Recife. Participe dos encontros da FGC local e conheça outros jogadores de anime fighters.",
   title: "PRÓXIMOS EVENTOS", pastTitle: "EVENTOS ANTERIORES", mobileTitle: "EVENTOS", subtitle: "Confira e se inscreva em nossos próximos eventos.", listTitle: "EM BREVE...",
   upcomingLabel: "Próximos", pastLabel: "Anteriores", leaderboardLabel: "Leaderboard", searchLabel: "Buscar eventos", emptyLabel: "Nenhum evento encontrado.",
   moreLabel: "Ver mais", subscribeLabel: "Inscreva-se", recordsLabel: "Ver registros", backLabel: "Voltar aos eventos", pastMessage: "Esse evento já passou!", detailsMessage: "Consulte os detalhes e a inscrição nas nossas redes.",
   dateLabel: "Data:", locationLabel: "Local:", priceLabel: "Valor da Inscrição:", bannerAlt: "Prepare-se: novidades de Street Fighter, dia 10 de junho",
 };
 export const defaultGalleryPage = {
-  seoTitle: "Galeria de eventos e encontros", seoDescription: "Reviva os torneios, encontros e noites de jogos da comunidade R-DASH em Recife na galeria de fotos.",
+  seoTitle: "Fotos de torneios e encontros da FGC em Recife", seoDescription: "Reviva os torneios, encontros e noites de jogos da comunidade R-DASH em Recife na galeria de fotos.",
   title: "GALERIA", subtitle: "Fotos dos campeonatos, encontros e eventos da comunidade", moreLabel: "Veja os registros", searchLabel: "Buscar álbuns", inputLabel: "Nome do álbum", submitLabel: "Buscar", emptyLabel: "Nenhum álbum encontrado.", allLabel: "Ver todos", backLabel: "Voltar à galeria",
 };
 export const defaultLeaderboardPage = {
-  seoTitle: "Ranking de jogadores", seoDescription: "Conheça os jogadores em destaque na comunidade R-DASH.",
+  seoTitle: "Ranking de jogadores da R-DASH", seoDescription: "Acompanhe o ranking e conheça os jogadores em destaque na R-DASH, comunidade de jogos de luta e anime fighters em Recife, Pernambuco.",
   title: "LEADERBOARD", subtitle: "Confira os jogadores que estão no\nnosso TOP 3.", rankLabel: "#", playerLabel: "Jogador", scoreLabel: "Score", searchLabel: "Buscar jogadores", emptyLabel: "Nenhum jogador encontrado.",
 };
 

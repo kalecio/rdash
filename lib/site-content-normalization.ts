@@ -1,6 +1,7 @@
 import * as defaults from '@/cms/defaults'
 import type { SiteContent } from './content-types'
 import { defaultThemeSettings, type ThemeSettings } from './themes'
+import { upgradeSeedSEO } from './seed-seo-upgrade'
 
 type ContentSources = {
   site?: Record<string, unknown>
@@ -47,10 +48,8 @@ export function resolveUploads(value: unknown, mediaBase = ''): unknown {
 }
 
 export function normalizeSiteContent(source: ContentSources, mediaBase = ''): SiteContent {
-  const global = (key: 'site' | 'home' | 'community' | 'eventsPage' | 'galleryPage' | 'leaderboardPage', initial: object) => ({
-    ...initial,
-    ...resolveUploads(source[key] ?? {}, mediaBase) as object,
-  })
+  const global = (key: 'site' | 'home' | 'community' | 'eventsPage' | 'galleryPage' | 'leaderboardPage', initial: object) =>
+    upgradeSeedSEO(key, initial, resolveUploads(source[key] ?? {}, mediaBase) as object)
 
   const assets: Record<string, string> = {}
   for (const asset of source.visual?.assets ?? []) {

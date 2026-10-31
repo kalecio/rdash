@@ -2,6 +2,7 @@
 
 import { useSiteContent, useAsset } from "./SiteContent";
 import Image from "next/image";
+import { isVisibleNavigationLink } from "@/lib/navigation";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -17,7 +18,7 @@ export function Header({ background, blurUntilHero = true, communityDesign = fal
   const content = useSiteContent();
   const headerBackground = background || content.site.theme.accent;
   const asset = useAsset();
-  const nav = content.site.navigation.filter(item => item.enabled);
+  const nav = content.site.navigation.filter(item => item.enabled && isVisibleNavigationLink(item));
   const designNavigation = communityDesign || figmaNav;
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroBlurActive, setHeroBlurActive] = useState(false);

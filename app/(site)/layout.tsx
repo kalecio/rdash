@@ -1,3 +1,4 @@
+import { rootMetadata, communityStructuredData, serializeStructuredData } from '@/lib/seo'
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { cookies } from "next/headers";
@@ -31,8 +32,7 @@ const rubikDirt = Rubik_Dirt({
 
 export const dynamic = "force-dynamic";
 export async function generateMetadata(): Promise<Metadata> {
-  const { site } = await getSiteContent();
-  return { title: { default: `${site.title} | ${site.titleSuffix}`, template: `%s | ${site.titleSuffix}` }, description: site.description };
+  return rootMetadata(await getSiteContent());
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -49,6 +49,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${geistSans.variable} ${geistMono.variable} ${dmSans.variable} ${rubikDirt.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeStructuredData(communityStructuredData(content)) }} />
         <SiteContentProvider content={content} initialTheme={initialTheme}><PencilBorderSvg />{children}</SiteContentProvider>
       </body>
     </html>

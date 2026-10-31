@@ -3,11 +3,14 @@
 import { useSiteContent, useAsset } from "./SiteContent";
 import Image from "next/image";
 import Link from "next/link";
+import { isVisibleNavigationLink } from "@/lib/navigation";
+import { FooterCredit } from "./FooterCredit";
 
 export function DesignFooter() {
   const content = useSiteContent();
   const asset = useAsset();
   const footer = content.site.footer;
+  const visibleLinks = footer.links.filter(isVisibleNavigationLink);
   return (
       <footer className={styles.footer}>
         <Image src={asset("/assets/community-footer.svg")}  alt="" width={1440} height={518} className="absolute left-0 top-[-25px] max-w-none mobile:hidden" unoptimized />
@@ -19,7 +22,7 @@ export function DesignFooter() {
         <section className={styles.footerSitemap}>
           <h2>{footer.sitemapTitle}</h2>
           <div className="flex gap-[48px]">
-            {[footer.links.slice(0, Math.ceil(footer.links.length / 2)), footer.links.slice(Math.ceil(footer.links.length / 2))].map((links,index)=><ul key={index}>{links.map(link=><li key={link.href}><Link href={link.href}>{link.label}</Link></li>)}</ul>)}
+            {[visibleLinks.slice(0, Math.ceil(visibleLinks.length / 2)), visibleLinks.slice(Math.ceil(visibleLinks.length / 2))].map((links,index)=><ul key={index}>{links.map(link=><li key={link.href}><Link href={link.href}>{link.label}</Link></li>)}</ul>)}
           </div>
         </section>
         <section className={styles.footerSocial}>
@@ -28,6 +31,7 @@ export function DesignFooter() {
             {footer.social.map(link=><li key={link.href}><a href={link.href}>{link.label}</a></li>)}
           </ul>
         </section>
+        <FooterCredit />
       </footer>
   );
 }

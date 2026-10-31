@@ -12,6 +12,7 @@ export function Main() {
 
   return (
     <main className={styles.redMain}>
+      <h1 className="sr-only">{content.site.name}: {content.home.seoTitle}</h1>
       <div className={styles.redTextureOverlay} aria-hidden="true" />
       <div className={styles.redMetroOverlay} aria-hidden="true" />
       {content.home.heroEnabled && <Hero />}

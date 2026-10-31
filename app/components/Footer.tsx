@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { FooterCredit } from "./FooterCredit";
 
 export function Footer() {
   return (
@@ -13,7 +14,7 @@ export function Footer() {
         </section>
         <section className={styles.footerSitemap}>
           <h2>Sitemap</h2>
-          <div><ul><li><Link href="/">Home</Link></li><li><Link href="/comunidade">Comunidade</Link></li><li><Link href="/eventos">Eventos</Link></li></ul><ul><li><Link href="/galeria">Galeria</Link></li><li><Link href="/loja">Loja</Link></li></ul></div>
+          <div><ul><li><Link href="/">Home</Link></li><li><Link href="/comunidade">Comunidade</Link></li><li><Link href="/eventos">Eventos</Link></li></ul><ul><li><Link href="/galeria">Galeria</Link></li></ul></div>
         </section>
         <section className={styles.footerSocial}>
           <h2>Social</h2>
@@ -24,6 +25,7 @@ export function Footer() {
       <div className={styles.footerMascot} aria-hidden="true">
         <Image className={styles.footerMascotImage} src="/assets/raissa_dash.gif" alt="" width={2048} height={2048} unoptimized />
       </div>
+      <FooterCredit />
     </footer>
   );
 }
