@@ -1,4 +1,7 @@
 @import "tailwindcss";
+@source "./";
+@source "../components";
+@source "../frontend-static/app";
 
 @theme inline {
   --font-sans: var(--font-dm-sans), Arial, sans-serif;
