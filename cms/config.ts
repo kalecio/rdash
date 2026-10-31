@@ -2,23 +2,17 @@ import type { Access, CollectionConfig, GlobalConfig } from 'payload'
 import { contentFields, linkIsSafe } from './fields'
 import path from 'node:path'
 import { themeSettings } from './theme-settings'
-import { requestStaticSiteDeployment } from './redeploy-static-site'
 import { defaultSite, defaultHome, defaultCommunity, defaultEventsPage, defaultGalleryPage, defaultLeaderboardPage, defaultEvents, defaultAlbums, defaultNews, defaultGames, defaultPlayers, defaultAssets } from './defaults'
 
 export const authenticated: Access = ({ req }) => Boolean(req.user)
 export const published: Access = ({ req }) => req.user ? true : { published: { equals: true } }
 const writes = { create: authenticated, update: authenticated, delete: authenticated }
-const redeployHooks = {
-  afterChange: [async () => { await requestStaticSiteDeployment() }],
-  afterDelete: [async () => { await requestStaticSiteDeployment() }],
-}
 
 const collection = (slug: CollectionConfig['slug'], label: string, sample: Record<string, unknown>): CollectionConfig => ({
   slug, labels: { singular: label, plural: label },
   admin: { useAsTitle: 'title' in sample ? 'title' : 'name', group: 'Conteúdo', defaultColumns: ['title' in sample ? 'title' : 'name', 'published', 'updatedAt'] },
   access: { ...writes, read: published },
   fields: contentFields(sample, false),
-  hooks: redeployHooks,
 })
 
 export const collections: CollectionConfig[] = [
@@ -33,7 +27,7 @@ export const collections: CollectionConfig[] = [
 ]
 
 const global = (slug: GlobalConfig['slug'], label: string, data: Record<string, unknown>): GlobalConfig => ({
-  slug, label, admin: { group: 'Páginas e aparência' }, access: { read: () => true, update: authenticated }, fields: contentFields(data), hooks: redeployHooks,
+  slug, label, admin: { group: 'Páginas e aparência' }, access: { read: () => true, update: authenticated }, fields: contentFields(data),
 })
 export const globals: GlobalConfig[] = [
   themeSettings,
@@ -44,7 +38,7 @@ export const globals: GlobalConfig[] = [
   global('events-page', 'Página de eventos', defaultEventsPage),
   global('gallery-page', 'Página da galeria', defaultGalleryPage),
   global('leaderboard-page', 'Página do ranking', defaultLeaderboardPage),
-  { slug: 'visual-assets', label: 'Imagens, logotipos e texturas', admin: { group: 'Páginas e aparência', description: 'Substitua as artes do Figma, logotipos, fundos, títulos desenhados e GIFs. SVGs podem ser referenciados por caminho ou URL; uploads aceitam imagens raster.' }, access: { read: () => true, update: authenticated }, hooks: redeployHooks, fields: [{ name: 'assets', label: 'Elementos visuais', type: 'array', defaultValue: defaultAssets, fields: [
+  { slug: 'visual-assets', label: 'Imagens, logotipos e texturas', admin: { group: 'Páginas e aparência', description: 'Substitua as artes do Figma, logotipos, fundos, títulos desenhados e GIFs. SVGs podem ser referenciados por caminho ou URL; uploads aceitam imagens raster.' }, access: { read: () => true, update: authenticated }, fields: [{ name: 'assets', label: 'Elementos visuais', type: 'array', defaultValue: defaultAssets, fields: [
     { name: 'key', label: 'Identificador original', type: 'text', required: true, admin: { readOnly: true } },
     { name: 'label', label: 'Nome do elemento', type: 'text', required: true },
     { name: 'url', label: 'Caminho ou URL', type: 'text', required: true, validate: linkIsSafe },

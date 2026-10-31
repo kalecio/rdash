@@ -35,7 +35,6 @@ services:
       SMTP_PASSWORD: ${SMTP_PASSWORD:-}
       SMTP_FROM: ${SMTP_FROM:-}
       SMTP_SECURE: ${SMTP_SECURE:-false}
-      CLOUDFLARE_PAGES_DEPLOY_HOOK: ${CLOUDFLARE_PAGES_DEPLOY_HOOK:-}
     volumes:
       - media_data:/app/media
     depends_on:
