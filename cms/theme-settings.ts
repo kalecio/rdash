@@ -1,6 +1,7 @@
 import type { Field, GlobalConfig } from 'payload'
 import { defaultThemeSettings, type ThemeMusic, type ThemeProfile } from '../lib/themes'
 import { contentFields, linkIsSafe } from './fields'
+import { requestStaticSiteDeployment } from './redeploy-static-site'
 
 const musicFields = (music: ThemeMusic): Field[] => [
   { name: 'title', label: 'Nome da trilha', type: 'text', required: true, defaultValue: music.title },
@@ -22,6 +23,9 @@ export const themeSettings: GlobalConfig = {
   slug: 'theme-settings', label: 'Temas e música',
   admin: { group: 'Páginas e aparência', description: 'Configure o seletor, o tema inicial, as artes azul/roxa e a trilha de cada variante. As cores e artes vermelhas continuam em Configurações do site e Imagens, logotipos e texturas.' },
   access: { read: () => true, update: ({ req }) => Boolean(req.user) },
+  hooks: {
+    afterChange: [async () => { await requestStaticSiteDeployment() }],
+  },
   fields: [
     { name: 'defaultTheme', label: 'Tema inicial', type: 'select', required: true, defaultValue: 'red', options: [{ label: 'Azul', value: 'blue' }, { label: 'Vermelho', value: 'red' }, { label: 'Roxo', value: 'purple' }] },
     { name: 'controlsEnabled', label: 'Exibir seletor de tema', type: 'checkbox', defaultValue: true },

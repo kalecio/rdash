@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build --webpack",
+    "build:static": "tsx scripts/build-static-content.ts && cd frontend-static && ../node_modules/.bin/next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "cms:types": "payload generate:types",

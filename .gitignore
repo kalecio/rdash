@@ -20,6 +20,9 @@
 # production
 /build
 /storybook-static/
+/frontend-static/.next/
+/frontend-static/out/
+/frontend-static/content.generated.json
 
 # misc
 .DS_Store

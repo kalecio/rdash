@@ -35,7 +35,15 @@ Os volumes `rdash_postgres_data` e `rdash_media_data` preservam banco e uploads 
 
 Crie uma Stack a partir do repositório e use `compose.portainer.yaml` como caminho do arquivo Compose. Cadastre as variáveis de `portainer.env.example` em **Environment variables** da Stack, substituindo todos os valores de exemplo. `DATABASE_URL` deve apontar para o serviço `db` e usar a mesma senha de `POSTGRES_PASSWORD`; codifique para URL caracteres especiais da senha.
 
-A Stack cria o PostgreSQL sem publicar a porta do banco, o site em `127.0.0.1:APP_PORT` (padrão `3000`) e o Storybook estático em `127.0.0.1:STORYBOOK_PORT` (padrão `6006`). O Storybook é compilado dentro da imagem durante o deploy e servido por um container próprio. Configure o Cloudflare Tunnel no host para encaminhar o domínio do site a `http://localhost:3000`; para publicar o Storybook, use `http://localhost:6006` e proteja esse hostname com Cloudflare Access. Se o `cloudflared` estiver em outro container, conecte-o à mesma rede Docker da Stack e use `http://app:3000` e `http://storybook:6006` como destinos. Informe o domínio público do site em `NEXT_PUBLIC_SERVER_URL`. Os volumes nomeados `rdash_postgres_data` e `rdash_media_data` mantêm o banco e os uploads entre atualizações.
+A Stack cria o PostgreSQL sem publicar a porta do banco, o CMS/admin em `127.0.0.1:APP_PORT` (padrão `3000`) e o Storybook estático em `127.0.0.1:STORYBOOK_PORT` (padrão `6006`). O Storybook é compilado dentro da imagem durante o deploy e servido por um container próprio. Encaminhe um hostname do Cloudflare Tunnel para o CMS; proteja `/admin*` e `/api/users/*` com Cloudflare Access, mantendo as rotas públicas de leitura da API acessíveis ao build do site. Para publicar o Storybook, use `http://localhost:6006` e proteja esse hostname com Access. Se o `cloudflared` estiver em outro container, conecte-o à mesma rede Docker da Stack e use `http://app:3000` e `http://storybook:6006` como destinos. Defina `NEXT_PUBLIC_SERVER_URL` para o hostname HTTPS do CMS. Os volumes nomeados `rdash_postgres_data` e `rdash_media_data` mantêm o banco e os uploads entre atualizações.
+
+## Publicar o frontend estático no Cloudflare Pages
+
+O projeto contém uma entrada Next separada em `frontend-static/`. O comando `pnpm build:static` busca globals e registros publicados pela API REST do Payload em `STATIC_CMS_URL`, grava um snapshot no build e exporta as páginas para `frontend-static/out`. Os arquivos gerados são descartáveis e não devem ser commitados. Imagens e áudios enviados ao CMS permanecem no container; o snapshot grava URLs absolutas para que as páginas do Pages carreguem esses arquivos do hostname do CMS.
+
+No projeto Cloudflare Pages, conecte este repositório, defina o comando de instalação como `pnpm install --frozen-lockfile`, o comando de build como `pnpm build:static` e o diretório de saída como `frontend-static/out`. Cadastre `STATIC_CMS_URL` nas variáveis de build do Pages com o hostname HTTPS do CMS. Esse hostname precisa permitir leituras públicas apenas dos globals e dos registros publicados usados pelo frontend; gravações continuam protegidas pela autenticação do Payload. O build falha se a API do CMS estiver indisponível, evitando publicar conteúdo incompleto.
+
+Crie um Deploy Hook de produção nas configurações do projeto Pages e copie a URL para `CLOUDFLARE_PAGES_DEPLOY_HOOK` nas variáveis da Stack do Portainer. Salvar ou excluir eventos, álbuns, novidades, jogos, jogadores, configurações de páginas, temas ou artes chama o hook e inicia outra publicação estática. Mantenha essa URL privada. O tema escolhido pelo visitante continua salvo no navegador; o conteúdo do CMS muda no site após o novo build terminar.
 
 ## O que editar
 
@@ -89,7 +97,7 @@ O adaptador SQLite também está disponível para testes isolados (`DATABASE_URL
 
 ## Hospedagem própria
 
-A imagem Docker executa como usuário sem privilégios. As migrações são aplicadas antes de iniciar o site. O Compose publica apenas na interface local; para publicação, encaminhe o tráfego pelo Cloudflare Tunnel e configure `NEXT_PUBLIC_SERVER_URL` para o domínio real.
+A imagem Docker executa como usuário sem privilégios. As migrações são aplicadas antes de iniciar o CMS. O Compose publica apenas na interface local; encaminhe o CMS pelo Cloudflare Tunnel e configure `NEXT_PUBLIC_SERVER_URL` para o hostname HTTPS correspondente.
 
 O build precisa de acesso à internet para instalar dependências e obter as fontes do Google. O segredo usado durante o build é descartável; o segredo real é injetado em tempo de execução pelo Compose.
 

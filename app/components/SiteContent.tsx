@@ -1,22 +1,33 @@
 'use client'
 
-import { createContext, useContext, useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react'
 import type { SiteContent } from '@/lib/content-types'
 import { themeAssets, themeColors, themeCookie, type ThemeId } from '@/lib/themes'
 import { SiteControls } from './SiteControls'
 
 const Context = createContext<SiteContent | null>(null)
 const ThemeContext = createContext<{ theme: ThemeId; selectTheme: (theme: ThemeId) => void } | null>(null)
+const themeChangeEvent = 'rdash-theme-change'
+function subscribeTheme(callback: () => void) {
+  window.addEventListener(themeChangeEvent, callback)
+  return () => window.removeEventListener(themeChangeEvent, callback)
+}
+function currentTheme(fallback: ThemeId): ThemeId {
+  const saved = document.cookie.split('; ').find(value => value.startsWith(`${themeCookie}=`))?.split('=')[1]
+  return saved === 'blue' || saved === 'red' || saved === 'purple' ? saved : fallback
+}
 export function SiteContentProvider({ content, children, initialTheme }: { content: SiteContent; children: ReactNode; initialTheme: ThemeId }) {
-  const [theme, setTheme] = useState(initialTheme)
+  const getThemeSnapshot = useCallback(() => currentTheme(initialTheme), [initialTheme])
+  const getServerThemeSnapshot = useCallback(() => initialTheme, [initialTheme])
+  const theme = useSyncExternalStore(subscribeTheme, getThemeSnapshot, getServerThemeSnapshot)
   const themedContent = useMemo(() => ({
     ...content,
     site: { ...content.site, theme: themeColors(theme, content.site.theme, content.themeSettings) },
     assets: { ...content.assets, ...themeAssets(theme, content.themeSettings) },
   }), [content, theme])
   const selectTheme = (next: ThemeId) => {
-    setTheme(next)
     document.cookie = `${themeCookie}=${next}; Path=/; Max-Age=31536000; SameSite=Lax`
+    window.dispatchEvent(new Event(themeChangeEvent))
   }
   useEffect(() => {
     document.documentElement.dataset.theme = theme
