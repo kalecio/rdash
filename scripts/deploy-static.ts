@@ -3,16 +3,6 @@ import { spawnSync } from 'node:child_process'
 
 nextEnv.loadEnvConfig(process.cwd())
 
-const mediaURL = process.env.STATIC_CMS_MEDIA_URL
-if (!mediaURL) {
-  throw new Error('Configure STATIC_CMS_MEDIA_URL no .env com o endereço HTTPS público do CMS para que imagens e áudios enviados também funcionem no site publicado.')
-}
-
-const parsedMediaURL = new URL(mediaURL)
-if (parsedMediaURL.protocol !== 'https:') {
-  throw new Error('STATIC_CMS_MEDIA_URL precisa usar HTTPS e estar acessível publicamente (por exemplo, o hostname do Tunnel do CMS).')
-}
-
 const projectName = process.env.CLOUDFLARE_PAGES_PROJECT || 'rdash'
 const branch = process.env.CLOUDFLARE_PAGES_BRANCH || 'main'
 

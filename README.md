@@ -39,7 +39,7 @@ A Stack cria o PostgreSQL sem publicar a porta do banco, o CMS/admin em `127.0.0
 
 ## Publicar o frontend estático no Cloudflare Pages
 
-O projeto contém uma entrada Next separada em `frontend-static/`. Para publicar manualmente depois de editar o CMS, configure `STATIC_CMS_MEDIA_URL` no `.env` com o hostname HTTPS público que serve os uploads do CMS (por exemplo, o hostname do Cloudflare Tunnel), autentique o Wrangler e execute:
+O projeto contém uma entrada Next separada em `frontend-static/`. Para publicar manualmente depois de editar o CMS, autentique o Wrangler e execute:
 
 ```sh
 pnpm exec wrangler login
@@ -47,7 +47,7 @@ pnpm exec wrangler pages project create rdash --production-branch main
 pnpm deploy:static
 ```
 
-O comando `pnpm deploy:static` lê globals e registros publicados do Payload em `http://127.0.0.1:3000` por padrão, gera o snapshot, exporta o site para `frontend-static/out` e envia o resultado ao Cloudflare Pages. O CMS local precisa estar rodando e acessível nessa porta. Se necessário, defina `STATIC_CMS_URL` no `.env` para outro endereço da API. O build falha se a API estiver indisponível, evitando publicar conteúdo incompleto. `STATIC_CMS_MEDIA_URL` separa o endereço local usado para ler o CMS do hostname público usado pelos visitantes para abrir imagens e áudios enviados; esses uploads continuam no container do CMS.
+O comando `pnpm deploy:static` lê globals e registros publicados do Payload em `http://127.0.0.1:3000` por padrão, gera o snapshot, inclui no próprio site os arquivos de mídia referenciados pelo conteúdo, exporta para `frontend-static/out` e envia o resultado ao Cloudflare Pages. O CMS local precisa estar rodando e acessível nessa porta. Se necessário, defina `STATIC_CMS_URL` no `.env` para outro endereço da API. O build falha se a API ou algum upload referenciado estiver indisponível, evitando publicar conteúdo incompleto. Não é necessário expor o CMS em um Tunnel para servir essas imagens e áudios.
 
 O projeto Pages deve ser do tipo Direct Upload. A primeira configuração cria o projeto `rdash`; depois do primeiro deploy, associe `rdash.kalec.io` em **Custom domains** nas configurações do Pages. O comando publica sempre a branch `main`; personalize com `CLOUDFLARE_PAGES_PROJECT` ou `CLOUDFLARE_PAGES_BRANCH` se usar outros nomes. Alterações feitas no painel do CMS não disparam deploy: execute `pnpm deploy:static` quando quiser publicar o conteúdo atualizado. O tema escolhido pelo visitante continua salvo no navegador.
 

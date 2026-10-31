@@ -2,13 +2,13 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import nextEnv from '@next/env'
 import { normalizeSiteContent } from '../lib/site-content-normalization'
+import { collectPayloadUploads, rewritePayloadUploadURLs, stagePayloadUploads } from './static-media'
 
 nextEnv.loadEnvConfig(process.cwd())
 
 type PayloadList<T> = { docs: T[]; hasNextPage?: boolean; nextPage?: number | null }
 
 const cmsURL = (process.env.STATIC_CMS_URL || 'http://127.0.0.1:3000').replace(/\/+$/, '')
-const mediaURL = (process.env.STATIC_CMS_MEDIA_URL || cmsURL).replace(/\/+$/, '')
 
 async function getJSON<T>(endpoint: string): Promise<T> {
   const url = new URL(endpoint, `${cmsURL}/`)
@@ -47,8 +47,13 @@ const [site, home, community, eventsPage, galleryPage, leaderboardPage, events, 
   global<Record<string, unknown>>('theme-settings'),
 ])
 
-const content = normalizeSiteContent({ site, home, community, eventsPage, galleryPage, leaderboardPage, events, albums, news, games, players, visual, themeSettings }, mediaURL)
+const sources = { site, home, community, eventsPage, galleryPage, leaderboardPage, events, albums, news, games, players, visual, themeSettings }
+const uploadedFiles = collectPayloadUploads(sources)
+const publicDir = path.resolve(process.cwd(), 'public')
+const uploadedURLs = await stagePayloadUploads(uploadedFiles, cmsURL, publicDir)
+const content = rewritePayloadUploadURLs(normalizeSiteContent(sources, cmsURL), uploadedURLs)
 const outputPath = path.resolve(process.cwd(), 'frontend-static/content.generated.json')
 await mkdir(path.dirname(outputPath), { recursive: true })
 await writeFile(outputPath, `${JSON.stringify(content)}\n`, 'utf8')
 console.info(`Baked CMS content for ${content.events.length} events, ${content.albums.length} albums, ${content.news.length} news items, and ${content.games.length} games.`)
+console.info(`Included ${uploadedURLs.size} CMS uploads in the static site.`)
