@@ -1,0 +1,11 @@
+.git
+.next
+node_modules
+.env*
+!.env.example
+data
+media
+coverage
+storybook-static
+*.tsbuildinfo
+.DS_Store

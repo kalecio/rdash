@@ -19,6 +19,10 @@
 
 # production
 /build
+/storybook-static/
+/frontend-static/.next/
+/frontend-static/out/
+/frontend-static/content.generated.json
 
 # misc
 .DS_Store
@@ -41,3 +45,9 @@ yarn-error.log*
 next-env.d.ts
 
 .opencode
+
+# CMS persistent files and local credentials
+/data/
+/media/
+/public/cms-media/
+!.env.example

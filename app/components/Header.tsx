@@ -1,25 +1,25 @@
 "use client";
 
+import { useSiteContent, useAsset } from "./SiteContent";
 import Image from "next/image";
+import { isVisibleNavigationLink } from "@/lib/navigation";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-
-const nav = [
-  ["Home", "/"],
-  ["Comunidade", "/comunidade"],
-  ["Eventos", "/eventos"],
-  ["Galeria", "/galeria"],
-  ["Loja", "/loja"],
-];
 
 type HeaderProps = {
   background?: string;
   blurUntilHero?: boolean;
-  showProfile?: boolean;
   communityDesign?: boolean;
+  figmaNav?: boolean;
+  activePage?: string;
 };
 
-export function Header({ background = "#e53a36", blurUntilHero = true, showProfile = false, communityDesign = false }: HeaderProps) {
+export function Header({ background, blurUntilHero = true, communityDesign = false, figmaNav = false, activePage = "Comunidade" }: HeaderProps) {
+  const content = useSiteContent();
+  const headerBackground = background || content.site.theme.accent;
+  const asset = useAsset();
+  const nav = content.site.navigation.filter(item => item.enabled && isVisibleNavigationLink(item));
+  const designNavigation = communityDesign || figmaNav;
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroBlurActive, setHeroBlurActive] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
@@ -50,49 +50,38 @@ export function Header({ background = "#e53a36", blurUntilHero = true, showProfi
   const blur = backdropActive ? "blur(6.6px)" : "none";
 
   return (
-    <header ref={headerRef} className={communityDesign ? styles.communityHeader : styles.redHeader}>
+    <header ref={headerRef} className={designNavigation ? styles.communityHeader : styles.redHeader}>
       <div
         hidden={communityDesign}
         aria-hidden="true"
         className={styles.redHeaderBackdrop}
         style={{
           backgroundColor: backdropActive
-            ? `color-mix(in srgb, ${background} 42%, transparent)`
-            : background,
+            ? `color-mix(in srgb, ${headerBackground} 42%, transparent)`
+            : headerBackground,
           backdropFilter: blur,
           WebkitBackdropFilter: blur,
         }}
       />
       {communityDesign ? (
-        <Image src="/assets/community-header.svg" alt="" width={1440} height={157} className="absolute left-0 top-0 max-w-none mobile:hidden" unoptimized />
+        <Image src={asset("/assets/community-header.svg")}  alt="" width={1440} height={157} className="absolute left-0 top-0 max-w-none mobile:hidden" unoptimized />
       ) : (
-        <img src="/assets/red-nav.svg?v=2" alt="" className={styles.redNavArt} />
+        <img src={asset("/assets/red-nav.svg")} alt="" className={styles.redNavArt} />
       )}
-      <div className={communityDesign ? styles.communityNavbar : styles.redNavbar}>
-        <Link href="/" aria-label="R-DASH página inicial" className={communityDesign ? styles.communityLogo : styles.redHeaderLogo}>
-          <Image src="/assets/rdash_mini_logo_vazado.png" alt="R-DASH" width={64} height={64} priority />
+      <div className={designNavigation ? styles.communityNavbar : styles.redNavbar}>
+        <Link href="/" aria-label="R-DASH página inicial" className={designNavigation ? styles.communityLogo : styles.redHeaderLogo}>
+          <Image unoptimized src={asset("/assets/rdash_mini_logo_vazado.png")}  alt={content.site.name} width={64} height={64} priority />
         </Link>
         <nav aria-label="Navegação principal">
-          {nav.map(([label, href], index) => (
-            <Link key={href} href={href} aria-current={communityDesign && href === "/comunidade" ? "page" : undefined}>
-              {communityDesign ? <Image src={`/assets/community-nav-${["home", "community", "events", "gallery", "shop"][index]}.svg`} alt={label} width={[98, 193, 136, 114, 75][index]} height={31} unoptimized /> : label}
+          {nav.map(({ label, href, image, activeImage, imageLabel, imageWidth }) => (
+            <Link key={href} href={href} aria-current={designNavigation && label === activePage ? "page" : undefined}>
+              {designNavigation && label === imageLabel && image ? <Image src={asset(label === activePage ? activeImage || image : image)} alt={label} width={imageWidth || 120} height={31} unoptimized /> : <span className="[font-family:var(--font-rubik-dirt),_sans-serif] text-[28px] mobile:text-[20px]">{label}</span>}
             </Link>
           ))}
         </nav>
-        {(showProfile || communityDesign) && (
-          <div className={communityDesign ? "w-[56px] h-[56px] shrink-0 mobile:hidden" : styles.redHeaderProfile} aria-hidden="true">
-            <Image
-              src={communityDesign ? "/assets/community-avatar.png" : "/assets/red-profile.png"}
-              alt=""
-              width={56}
-              height={56}
-              className={communityDesign ? "w-full h-full" : styles.redHeaderProfileImage}
-            />
-          </div>
-        )}
         <div className={`${styles.mobileMenu}${menuOpen ? " is-open" : ""}`}>
           <button
-            className={communityDesign ? styles.communityMenuToggle : styles.mobileMenuToggle}
+            className={designNavigation ? styles.communityMenuToggle : styles.mobileMenuToggle}
             type="button"
             aria-label={menuOpen ? "Fechar menu de navegação" : "Abrir menu de navegação"}
             aria-expanded={menuOpen}
@@ -105,7 +94,7 @@ export function Header({ background = "#e53a36", blurUntilHero = true, showProfi
               <button className={styles.mobileMenuBackdrop} type="button" aria-label="Fechar menu" onClick={() => setMenuOpen(false)} />
               <nav className={styles.mobileMenuDrawer} aria-label="Navegação móvel">
                 <button className={styles.mobileMenuClose} type="button" aria-label="Fechar menu" onClick={() => setMenuOpen(false)}>×</button>
-                {nav.map(([label, href]) => <Link key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</Link>)}
+                {nav.map(({label, href}) => <Link key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</Link>)}
               </nav>
             </>
           )}
@@ -116,8 +105,8 @@ export function Header({ background = "#e53a36", blurUntilHero = true, showProfi
 }
 
 const styles = {
-  communityHeader: "sticky z-20 top-0 isolate h-[133px] text-white mobile:absolute mobile:top-[49px] mobile:left-0 mobile:w-[402px] mobile:h-[64px] mobile:bg-[#e53935]",
-  communityNavbar: "absolute z-1 inset-[4px_100px_auto] h-[80px] flex items-center justify-between [&_>_nav]:ml-auto [&_>_nav]:mr-[32px] [&_>_nav]:flex [&_>_nav]:items-center [&_>_nav]:gap-[40px] [&_>_nav]:px-[24px] [&_>_nav_a]:shrink-0 [&_>_nav_a:hover]:opacity-80 mobile:inset-0 mobile:h-[64px] mobile:px-[16px] mobile:[&_>_nav]:hidden mobile:[&_>_nav]:mr-0",
+  communityHeader: "pointer-events-none sticky z-20 top-0 isolate h-[133px] text-white mobile:absolute mobile:top-[49px] mobile:left-0 mobile:w-[402px] mobile:h-[64px] mobile:bg-[var(--cms-accent)]",
+  communityNavbar: "pointer-events-auto absolute z-1 inset-[4px_100px_auto] h-[80px] flex items-center justify-between [&_>_nav]:ml-auto [&_>_nav]:mr-[32px] [&_>_nav]:flex [&_>_nav]:items-center [&_>_nav]:gap-[40px] [&_>_nav]:px-[24px] [&_>_nav_a]:shrink-0 [&_>_nav_a:hover]:opacity-80 mobile:inset-0 mobile:h-[64px] mobile:px-[16px] mobile:[&_>_nav]:hidden mobile:[&_>_nav]:mr-0",
   communityMenuToggle: "relative flex h-[37px] w-[48px] cursor-pointer flex-col items-center justify-center gap-[5px] border-0 bg-transparent p-0 [&_span]:block [&_span]:h-[4px] [&_span]:w-[32px] [&_span]:bg-white",
   communityLogo: "flex w-[80px] h-[80px] items-center justify-center p-[8px] [&_img]:object-contain mobile:w-[72px] mobile:h-[72px] mobile:p-[12px] mobile:[&_img]:w-[48px] mobile:[&_img]:h-[48px]",
 
@@ -148,8 +137,6 @@ const styles = {
     "mobile:p-0 mobile:w-[32px] mobile:h-[32px]",
     "mobile:[&_img]:w-[32px] mobile:[&_img]:h-[32px]",
   ].join(" "),
-  redHeaderProfile: "w-[56px] h-[56px] overflow-hidden rounded-full border-[3px] border-white mobile:hidden",
-  redHeaderProfileImage: "w-full h-full object-cover scale-[2.7] origin-[50%_12%]",
   mobileMenu: [
     "mobile-menu",
     "hidden",
@@ -164,7 +151,7 @@ const styles = {
   ].join(" "),
   mobileMenuBackdrop: "mobile:fixed mobile:z-31 mobile:inset-0 mobile:w-[100vw] mobile:h-[100dvh] mobile:p-0 mobile:[border:0] mobile:bg-[rgba(0,0,0,.56)]",
   mobileMenuDrawer: [
-    "mobile:fixed mobile:z-32 mobile:inset-[0_0_0_auto] mobile:flex mobile:w-[min(300px,_85vw)] mobile:h-[100dvh] mobile:min-h-full mobile:flex-col mobile:gap-[8px] mobile:p-[104px_24px_24px] mobile:bg-[#5b0c0a] mobile:text-[length:20px] mobile:shadow-[-12px_0_32px_rgba(0,0,0,.35)]",
+    "mobile:fixed mobile:z-32 mobile:inset-[0_0_0_auto] mobile:flex mobile:w-[min(300px,_85vw)] mobile:h-[100dvh] mobile:min-h-full mobile:flex-col mobile:gap-[8px] mobile:p-[104px_24px_24px] mobile:bg-[var(--cms-dark)] mobile:text-[length:20px] mobile:shadow-[-12px_0_32px_rgba(0,0,0,.35)]",
     "mobile:[&_a]:p-[14px_12px] mobile:[&_a]:[border-bottom:1px_solid_rgba(255,255,255,.14)]",
   ].join(" "),
   mobileMenuClose: "mobile:absolute mobile:top-[20px] mobile:right-[20px] mobile:grid mobile:w-[44px] mobile:h-[44px] mobile:place-items-center mobile:p-0 mobile:[border:0] mobile:bg-[transparent] mobile:text-white mobile:cursor-pointer mobile:[font:36px/1_Arial,_sans-serif]",
