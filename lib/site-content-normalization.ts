@@ -80,7 +80,7 @@ export function normalizeSiteContent(source: ContentSources, mediaBase = ''): Si
     }
   }
 
-  const players = (source.players ?? defaults.defaultPlayers) as typeof defaults.defaultPlayers
+  const players = resolveUploads(source.players ?? defaults.defaultPlayers, mediaBase) as typeof defaults.defaultPlayers
   return {
     site: global('site', defaults.defaultSite),
     home: global('home', defaults.defaultHome),
@@ -88,10 +88,10 @@ export function normalizeSiteContent(source: ContentSources, mediaBase = ''): Si
     eventsPage: global('eventsPage', defaults.defaultEventsPage),
     galleryPage: global('galleryPage', defaults.defaultGalleryPage),
     leaderboardPage: global('leaderboardPage', defaults.defaultLeaderboardPage),
-    events: (source.events ?? defaults.defaultEvents) as typeof defaults.defaultEvents,
-    albums: (source.albums ?? defaults.defaultAlbums) as typeof defaults.defaultAlbums,
-    news: (source.news ?? defaults.defaultNews) as typeof defaults.defaultNews,
-    games: (source.games ?? defaults.defaultGames) as typeof defaults.defaultGames,
+    events: resolveUploads(source.events ?? defaults.defaultEvents, mediaBase) as typeof defaults.defaultEvents,
+    albums: resolveUploads(source.albums ?? defaults.defaultAlbums, mediaBase) as typeof defaults.defaultAlbums,
+    news: resolveUploads(source.news ?? defaults.defaultNews, mediaBase) as typeof defaults.defaultNews,
+    games: resolveUploads(source.games ?? defaults.defaultGames, mediaBase) as typeof defaults.defaultGames,
     players: players.map((player, index) => ({ ...player, rank: index + 1 })),
     assets,
     themeSettings,
