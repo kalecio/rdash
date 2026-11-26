@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { isThemeId, themeCookie, themeColors } from "@/lib/themes";
 import { getSiteContent } from "@/lib/content";
 import { SiteContentProvider } from "@/app/components/SiteContent";
+import { DraftPreviewBanner } from "@/app/components/DraftPreviewBanner";
 import { Geist, Geist_Mono, DM_Sans, Rubik_Dirt } from "next/font/google";
 import { PencilBorderSvg } from "@/app/components/PencilBorder";
 import "../globals.css";
@@ -50,7 +51,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     >
       <body className="min-h-full flex flex-col">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeStructuredData(communityStructuredData(content)) }} />
-        <SiteContentProvider content={content} initialTheme={initialTheme}><PencilBorderSvg />{children}</SiteContentProvider>
+        <SiteContentProvider content={content} initialTheme={initialTheme}><PencilBorderSvg /><DraftPreviewBanner />{children}</SiteContentProvider>
       </body>
     </html>
   );
