@@ -72,7 +72,9 @@ O seletor salva a escolha do visitante em um cookie e a mantém entre páginas e
 
 O arquivo enviado tem prioridade sobre o caminho textual. Remova a seleção do upload para voltar a usar o caminho. As artes que contêm letras são imagens; podem ser substituídas neste grupo. Na navegação e nos títulos da Home, alterar o texto também permite usar uma versão textual sem recriar a arte.
 
-Recarregue o site após salvar para ver as alterações. A leitura pública vem do banco a cada requisição e não exige novo build. Campos de publicação controlam quais registros aparecem na API pública e no site. Todas as alterações exigem login.
+Eventos e páginas públicas têm rascunhos e histórico de até 50 versões. Ao editar um conteúdo já publicado, salve o rascunho para revisar sem alterar o site público; use **Pré-visualizar** no painel para abrir a página em uma sessão privada de pré-visualização. A pré-visualização exige `CMS_PREVIEW_SECRET` configurado no CMS e no site, com um valor longo e aleatório. Use **Publicar** para atualizar o conteúdo público; o histórico de versões permite restaurar uma versão anterior. Leituras anônimas da API e exportações estáticas continuam usando somente a versão publicada.
+
+Para os demais campos sem rascunho, salve e recarregue o site para ver as alterações. A leitura pública vem do banco a cada requisição e não exige novo build. Campos de publicação controlam quais registros aparecem na API pública e no site. Todas as alterações exigem login.
 
 A estrutura visual continua baseada nos componentes existentes. O painel permite editar conteúdo, cores, artes, visibilidade e posições avançadas da Home; criar novos tipos de seção ou alterar regras de responsividade exige desenvolvimento.
 

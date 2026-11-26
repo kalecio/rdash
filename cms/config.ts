@@ -3,6 +3,7 @@ import { contentFields, linkIsSafe } from './fields'
 import path from 'node:path'
 import { themeSettings } from './theme-settings'
 import { defaultSite, defaultHome, defaultCommunity, defaultEventsPage, defaultGalleryPage, defaultLeaderboardPage, defaultEvents, defaultAlbums, defaultNews, defaultGames, defaultPlayers, defaultAssets } from './defaults'
+import { globalPreviewURL, previewURL } from './preview'
 
 export const authenticated: Access = ({ req }) => Boolean(req.user)
 export const published: Access = ({ req }) => req.user ? true : { published: { equals: true } }
@@ -10,8 +11,9 @@ const writes = { create: authenticated, update: authenticated, delete: authentic
 
 const collection = (slug: CollectionConfig['slug'], label: string, sample: Record<string, unknown>): CollectionConfig => ({
   slug, labels: { singular: label, plural: label },
-  admin: { useAsTitle: 'title' in sample ? 'title' : 'name', group: 'Conteúdo', defaultColumns: ['title' in sample ? 'title' : 'name', 'published', 'updatedAt'] },
-  access: { ...writes, read: published },
+  admin: { useAsTitle: 'title' in sample ? 'title' : 'name', group: 'Conteúdo', defaultColumns: ['title' in sample ? 'title' : 'name', 'published', 'updatedAt'], ...(slug === 'events' ? { preview: () => previewURL('/eventos') } : {}) },
+  access: { ...writes, read: published, ...(slug === 'events' ? { readVersions: authenticated } : {}) },
+  ...(slug === 'events' ? { versions: { drafts: true, maxPerDoc: 50 } } : {}),
   fields: contentFields(sample, false),
 })
 
@@ -27,7 +29,7 @@ export const collections: CollectionConfig[] = [
 ]
 
 const global = (slug: GlobalConfig['slug'], label: string, data: Record<string, unknown>): GlobalConfig => ({
-  slug, label, admin: { group: 'Páginas e aparência' }, access: { read: () => true, update: authenticated }, fields: contentFields(data),
+  slug, label, admin: { group: 'Páginas e aparência', preview: () => globalPreviewURL(slug) }, access: { read: () => true, readVersions: authenticated, update: authenticated }, versions: { drafts: true, max: 50 }, fields: contentFields(data),
 })
 export const globals: GlobalConfig[] = [
   themeSettings,

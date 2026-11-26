@@ -55,6 +55,44 @@ test('authenticated editors can update page copy and upload media', async () => 
   await payload.delete({ collection: 'users', id: user.id })
 })
 
+test('drafts keep published events and page globals public until publishing, and prior versions can be restored', async () => {
+  const user = await payload.create({ collection: 'users', data: { name: 'Draft editor', email: 'draft-editor@example.test', password: 'only-a-temporary-test-password' } })
+  const event = await payload.create({ collection: 'events', data: {
+    title: 'Published event before edit', description: 'Test', image: '/assets/events-detail.png', mobileImage: '/assets/events-detail.png', detailImage: '/assets/events-detail.png',
+    slug: 'draft-preview-test', status: 'upcoming', href: '/eventos', order: 1, published: true,
+  } })
+
+  await payload.update({ collection: 'events', id: event.id, data: { title: 'Private event draft' }, draft: true, user, overrideAccess: false })
+  const publicEvent = await payload.findByID({ collection: 'events', id: event.id, overrideAccess: false })
+  const privateEvent = await payload.findByID({ collection: 'events', id: event.id, draft: true, overrideAccess: false, user })
+  assert.equal(publicEvent.title, 'Published event before edit')
+  assert.equal(privateEvent.title, 'Private event draft')
+  await assert.rejects(payload.findVersions({ collection: 'events', where: { parent: { equals: event.id } }, overrideAccess: false }))
+
+  await payload.update({ collection: 'events', id: event.id, data: { title: 'Published event update' }, draft: false, user, overrideAccess: false })
+  assert.equal((await payload.findByID({ collection: 'events', id: event.id, overrideAccess: false })).title, 'Published event update')
+  const eventVersions = await payload.findVersions({ collection: 'events', where: { parent: { equals: event.id } }, limit: 20 })
+  const oldEventVersion = eventVersions.docs.find(version => version.version.title === 'Published event before edit')
+  assert.ok(oldEventVersion, 'the original published event is retained as a version')
+  await payload.restoreVersion({ collection: 'events', id: oldEventVersion.id, draft: false, user, overrideAccess: false })
+  assert.equal((await payload.findByID({ collection: 'events', id: event.id, overrideAccess: false })).title, 'Published event before edit')
+
+  const originalPage = await payload.findGlobal({ slug: 'community', overrideAccess: false })
+  await payload.updateGlobal({ slug: 'community', data: { title: 'Private page draft' }, draft: true, user, overrideAccess: false })
+  assert.equal((await payload.findGlobal({ slug: 'community', overrideAccess: false })).title, originalPage.title)
+  assert.equal((await payload.findGlobal({ slug: 'community', draft: true, overrideAccess: false, user })).title, 'Private page draft')
+  await assert.rejects(payload.findGlobalVersions({ slug: 'community', overrideAccess: false }))
+  await payload.updateGlobal({ slug: 'community', data: { title: 'Published page update' }, draft: false, user, overrideAccess: false })
+  assert.equal((await payload.findGlobal({ slug: 'community', overrideAccess: false })).title, 'Published page update')
+  const pageVersions = await payload.findGlobalVersions({ slug: 'community', limit: 20 })
+  const oldPageVersion = pageVersions.docs.find(version => version.version.title === originalPage.title)
+  assert.ok(oldPageVersion, 'the original page is retained as a version')
+  await payload.restoreGlobalVersion({ slug: 'community', id: oldPageVersion.id, user, overrideAccess: false })
+  assert.equal((await payload.findGlobal({ slug: 'community', overrideAccess: false })).title, originalPage.title)
+
+  await payload.delete({ collection: 'users', id: user.id })
+})
+
 test('seed imports existing content once and preserves later edits and deletions', async () => {
   const { seedContent } = await import('../cms/seed')
   await seedContent(payload)

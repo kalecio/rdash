@@ -247,6 +247,7 @@ export interface Event {
   published?: boolean | null;
   updatedAt: string;
   createdAt: string;
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -523,6 +524,7 @@ export interface EventsSelect<T extends boolean = true> {
   published?: T;
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -792,6 +794,7 @@ export interface Site {
     text: string;
     mutedText: string;
   };
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -838,6 +841,7 @@ export interface Home {
     buttonLabel: string;
     buttonHref: string;
   };
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -867,6 +871,7 @@ export interface Community {
         id?: string | null;
       }[]
     | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -898,6 +903,7 @@ export interface EventsPage {
   locationLabel: string;
   priceLabel: string;
   bannerAlt: string;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -918,6 +924,7 @@ export interface GalleryPage {
   emptyLabel: string;
   allLabel: string;
   backLabel: string;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -936,6 +943,7 @@ export interface LeaderboardPage {
   scoreLabel: string;
   searchLabel: string;
   emptyLabel: string;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1118,6 +1126,7 @@ export interface SiteSelect<T extends boolean = true> {
         text?: T;
         mutedText?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1168,6 +1177,7 @@ export interface HomeSelect<T extends boolean = true> {
         buttonLabel?: T;
         buttonHref?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1197,6 +1207,7 @@ export interface CommunitySelect<T extends boolean = true> {
         href?: T;
         id?: T;
       };
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1228,6 +1239,7 @@ export interface EventsPageSelect<T extends boolean = true> {
   locationLabel?: T;
   priceLabel?: T;
   bannerAlt?: T;
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1248,6 +1260,7 @@ export interface GalleryPageSelect<T extends boolean = true> {
   emptyLabel?: T;
   allLabel?: T;
   backLabel?: T;
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
@@ -1266,6 +1279,7 @@ export interface LeaderboardPageSelect<T extends boolean = true> {
   scoreLabel?: T;
   searchLabel?: T;
   emptyLabel?: T;
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
